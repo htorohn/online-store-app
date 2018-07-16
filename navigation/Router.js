@@ -9,6 +9,7 @@ import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 //import User from './components/User';
 import TabBarIcon from '../components/TabBarIcon';
+import BadgedTabBarIcon from '../components/BadgedTabBarIcon';
 
 const AppNavigator = () => {
     return (
@@ -46,7 +47,7 @@ const AppNavigator = () => {
             <Scene 
                 key="LinksWrapper"
                 icon={({ focused }) => (
-                    <TabBarIcon
+                    <BadgedTabBarIcon
                         focused={focused}
                         name={
                             Platform.OS === 'ios' 

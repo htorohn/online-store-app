@@ -4,9 +4,9 @@ import { FlatList, Image, TouchableWithoutFeedback, Text } from 'react-native';
 import { Container, Content, Card, CardItem, Spinner, Left, Right } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { productsFetch } from '../../redux/actions';
-import { MAIN_URL } from '../../constants/Config';
+//import { MAIN_URL } from '../../constants/Config';
 
-import { MonoText } from '../../components/StyledText';
+//import { MonoText } from '../../components/StyledText';
 
 
 class ProductList extends Component {

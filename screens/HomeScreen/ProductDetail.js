@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { 
     Container, 
     Content, 
@@ -15,8 +16,13 @@ import { View, Image } from 'react-native'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
 import Hr from "react-native-hr-component";
+import { addProductToCart } from '../../redux/actions';
 
 class ProductDetail extends Component {
+    handleButtonPress() {
+        this.props.addProductToCart();
+    }
+ 
     render() {
         console.log(this.props.item)
         const { item } = this.props
@@ -60,7 +66,13 @@ class ProductDetail extends Component {
                             </H3>
                         </CardItem>
                     </Card>
-                    <Button block style={{marginLeft: 5, marginRight: 5}}>
+                    <Button 
+                        block 
+                        style={{marginLeft: 5, marginRight: 5}}
+                        onPress={() => {
+                            this.handleButtonPress();
+                          }}
+                    >
                         <Text>Agregar</Text>
                     </Button>
                     <Card transparent >
@@ -78,6 +90,7 @@ class ProductDetail extends Component {
                                 <Text style={{textAlign: 'justify'}}>
                                     {item.description}
                                 </Text>
+
                             </Content>
                         </CardItem>
                     </Card>
@@ -87,7 +100,7 @@ class ProductDetail extends Component {
     }
 }
 
-export default ProductDetail
+export default connect(null, { addProductToCart })(ProductDetail);
 
 const customStylesHere = {
     fontWeight: "bold",
