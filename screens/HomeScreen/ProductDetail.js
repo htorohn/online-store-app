@@ -20,9 +20,9 @@ import {
 import { View, Image } from 'react-native'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
-import Hr from "react-native-hr-component";
-import Modal from 'react-native-modal';
-import { addProductToCart } from '../../redux/actions';
+import Hr from "react-native-hr-component"
+import Modal from 'react-native-modal'
+import { addProductToCart } from '../../redux/actions'
 
 class ProductDetail extends Component {
     state = {
@@ -34,9 +34,10 @@ class ProductDetail extends Component {
         //this.props.addProductToCart();
     }
 
-    _handleAcceptButtonPress() {
+    _handleAcceptButtonPress(item) {
         this.setState({ visibleModal: null })
-        this.props.addProductToCart();
+        this.props.addProductToCart(item);
+
     }
 
     _handleCancelButtonPress() {
@@ -52,32 +53,44 @@ class ProductDetail extends Component {
         </TouchableOpacity>
       );
 
-    _renderModalContent = () => (   
-        <View style={styles.modalContent}>
-            <Text>Hello!</Text>
-          {/* {this._renderButton('Close', () => this.setState({ visibleModal: null }))} */}
-            <Button 
-                block 
-                style={{marginLeft: 5, marginRight: 5}}
-                onPress={() => {
-                    this._handleAcceptButtonPress();
-                    }}
-            >
-                <Text>Agregar</Text>
-            </Button>
-          {/* {this._renderButton('Close', () => this.setState({ visibleModal: null }))} */}
-            <Button
-                light
-                block 
-                style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
-                onPress={() => {
-                    this._handleCancelButtonPress();
-                    }}
-            >
-                <Text>Cancelar</Text>
-            </Button>
-        </View>
-    );
+    _renderModalContent(item) { 
+        const text = item.has_variants?"tiene variantes":"no tiene variantes"
+        let text2 = ""
+        if (this.props.state.order.orderNumber=="") {
+            text2 = "No se ha creado la orden";
+            
+            //
+        } else {
+            text2 = this.props.state.order.orderNumber;
+        }   
+        return(   
+            <View style={styles.modalContent}>
+                <Text>{text}</Text>
+                <Text>{text2}</Text>
+            {/* {this._renderButton('Close', () => this.setState({ visibleModal: null }))} */}
+                <Button 
+                    block 
+                    style={{marginLeft: 5, marginRight: 5}}
+                    onPress={() => {
+                        this._handleAcceptButtonPress(item)
+                        }}
+                >
+                    <Text>Agregar</Text>
+                </Button>
+            {/* {this._renderButton('Close', () => this.setState({ visibleModal: null }))} */}
+                <Button
+                    light
+                    block 
+                    style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
+                    onPress={() => {
+                        this._handleCancelButtonPress()
+                        }}
+                >
+                    <Text>Cancelar</Text>
+                </Button>
+            </View>
+        );
+    }
  
     render() {
         //console.log(this.props.item)
@@ -150,22 +163,6 @@ class ProductDetail extends Component {
                             </Content>
                         </CardItem>
                         <CardItem cardBody> 
-                            {/* {
-                                properties.map(
-                                    (property, key) => {
-                                        return (
-                                            <Content padder>
-                                                <Left>
-                                                    <Text>{ property.property_name }</Text>
-                                                </Left>
-                                                <Right>
-                                                    <Text>{ property.value }</Text>
-                                                </Right>
-                                                </Content>
-                                        );
-                                    }
-                                )
-                            } */}
                             <List dataArray={properties}
                                 renderRow={(property) =>
                                 <ListItem>
@@ -183,7 +180,7 @@ class ProductDetail extends Component {
                     
                     {/* Modal para agregar al carrito */}
                     <Modal isVisible={this.state.visibleModal === 1}>
-                        {this._renderModalContent()}
+                        {this._renderModalContent(item)}
                     </Modal>
                 </Content>
             </Container>
@@ -192,7 +189,14 @@ class ProductDetail extends Component {
     }
 }
 
-export default connect(null, { addProductToCart })(ProductDetail);
+const mapStateToProps = state => {
+    console.log(state.order);
+    return {
+        state
+    };
+};
+
+export default connect(mapStateToProps, { addProductToCart })(ProductDetail);
 
 const customStylesHere = {
     fontWeight: "bold",
