@@ -12,3 +12,5 @@ export const CREATING_ORDER = 'creating_order';
 export const CREATING_ORDER_SUCCESS = 'creating_order_success';
 export const CREATING_ORDER_FAILURE = 'creating_order_failure';
 
+//Error
+export const DISPLAY_ERROR = 'display_error';

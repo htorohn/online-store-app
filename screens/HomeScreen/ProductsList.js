@@ -82,8 +82,9 @@ class ProductList extends Component {
 }
 
 const mapStateToProps = state => {
-    if (state.productsList.products.data) {
-        const productsList = state.productsList.products.data;
+    //console.log(state)
+    if (state.productsList.products) {
+        const productsList = state.productsList.products;
         //console.log(productsList);
         return { productsList };
     }

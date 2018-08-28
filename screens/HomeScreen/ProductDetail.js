@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { connect } from 'react-redux';
 import { 
     Container, 
@@ -11,94 +11,115 @@ import {
     Badge,
     Button,
     Left,
-    Right,
     List,
     ListItem,
     H2, 
-    H3
+    H3,
+    Picker,
+    Icon,
+    Right
 } from 'native-base'
-import { View, Image } from 'react-native'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
 import Hr from "react-native-hr-component"
-import Modal from 'react-native-modal'
+import NumericInput from 'react-native-numeric-input'
 import { addProductToCart } from '../../redux/actions'
 
 class ProductDetail extends Component {
-    state = {
-        visibleModal: null,
-    };
-    
-    handleButtonPress() {
-        this.setState({ visibleModal: 1 })
-        //this.props.addProductToCart();
+    constructor(props) {
+        super(props);
+        this.state = {
+          current_variant: 0,
+          qty: 1,
+          visibleModal: null
+        };
     }
 
-    _handleAcceptButtonPress(item) {
-        this.setState({ visibleModal: null })
-        this.props.addProductToCart(item);
-
+    onVariantChange(key) {
+        this.setState({
+            current_variant: key
+        });
     }
 
-    _handleCancelButtonPress() {
-        this.setState({ visibleModal: null })
-        //this.props.addProductToCart();
+    handleButtonPress(variant) {
+        let line_item = {
+            variant_id: variant.id,
+            quantity: this.state.qty
+        }
+        this.props.addProductToCart({variant, line_item})
+            .then (() => {
+                alert("Producto Agregado!")
+            })
+        
     }
 
-    _renderButton = (text, onPress) => (
-        <TouchableOpacity onPress={onPress}>
-          <View style={styles.button}>
-            <Text>{text}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-
-    _renderModalContent(item) { 
-        const text = item.has_variants?"tiene variantes":"no tiene variantes"
-        let text2 = ""
-        if (this.props.state.order.orderNumber=="") {
-            text2 = "No se ha creado la orden";
-            
-            //
-        } else {
-            text2 = this.props.state.order.orderNumber;
-        }   
-        return(   
-            <View style={styles.modalContent}>
-                <Text>{text}</Text>
-                <Text>{text2}</Text>
-            {/* {this._renderButton('Close', () => this.setState({ visibleModal: null }))} */}
-                <Button 
-                    block 
-                    style={{marginLeft: 5, marginRight: 5}}
-                    onPress={() => {
-                        this._handleAcceptButtonPress(item)
-                        }}
-                >
-                    <Text>Agregar</Text>
-                </Button>
-            {/* {this._renderButton('Close', () => this.setState({ visibleModal: null }))} */}
-                <Button
-                    light
-                    block 
-                    style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
-                    onPress={() => {
-                        this._handleCancelButtonPress()
-                        }}
-                >
-                    <Text>Cancelar</Text>
-                </Button>
-            </View>
-        );
-    }
  
     render() {
         //console.log(this.props.item)
         const { item } = this.props
-        const images = _.map(item.master.images, 'large_url')
+        const selected_variant = item.has_variants?item.variants[this.state.current_variant]:item.master
+        const images = _.map(selected_variant.images, 'large_url')
         const taxons = _.map(item.classifications, 'taxon')
         const properties = item.product_properties
-        console.log(properties)
+        //console.log(properties)
+
+        //seleccionamos el variant que deseamos
+        let variant_picker = null
+        if (item.has_variants){
+            const variants = item.variants
+            variant_picker =
+                <CardItem>
+                    <Left>    
+                        <Picker
+                            mode="dropdown"
+                            iosIcon={<Icon name="ios-arrow-down-outline" />}
+                            placeholderStyle={{ color: "#bfc6ea" }}
+                            placeholderIconColor="#007aff"
+                            style={{ width: undefined }}
+                            selectedValue={this.state.current_variant}
+                            onValueChange={this.onVariantChange.bind(this)}
+                        >
+                            {
+                                variants.map(
+                                    (variant, id) => {
+                                        return (                                        
+                                            <Picker.Item label={variant.options_text} value={id} key={id} />
+                                        );
+                                    }
+                                )
+                            }
+                        </Picker>
+                    </Left>
+                </CardItem>
+        }
+
+        //Cantidad de items disponibles
+        let qty_picker
+        //console.log(selected_variant.total_on_hand)
+        if (selected_variant.total_on_hand === 0){
+            qty_picker = 
+                    <Text note style={{ color: 'red' }}>
+                        No Disponible
+                    </Text>
+        }else{
+            qty_picker = 
+                <NumericInput 
+                    value={this.state.qty} 
+                    onChange={(num)=>{this.setState({qty: num})}} 
+                    totalWidth={100} 
+                    totalHeight={35} 
+                    iconSize={25}
+                    step={1}
+                    minValue={1}
+                    maxValue={selected_variant.total_on_hand}
+                    //valueType='real'
+                    rounded 
+                    textColor='black' 
+                    iconStyle={{ color: 'black' }} 
+                    rightButtonBackgroundColor='white' 
+                    leftButtonBackgroundColor='white'
+                />
+        }
         return (
             <Container>
                 <Content>
@@ -113,8 +134,7 @@ class ProductDetail extends Component {
                             {/* <Body> */}
                                 <H2>{item.name}</H2>
                             </CardItem>
-                            <CardItem>
-                                
+                            <CardItem> 
                                 {
                                     taxons.map(
                                         (taxon, id) => {
@@ -131,16 +151,23 @@ class ProductDetail extends Component {
                             {/* </Body> */}
                         </CardItem>
                         <CardItem>
-                            <H3>
-                                {item.master.display_price}
-                            </H3>
+                            <Left>
+                                <H3>
+                                    { selected_variant.display_price }
+                                </H3>
+                            </Left>
+                            <Right>
+                                { qty_picker }
+                            </Right>
                         </CardItem>
+                        { variant_picker }
                     </Card>
                     <Button 
                         block 
-                        style={{marginLeft: 5, marginRight: 5}}
+                        style={ {marginLeft: 5, marginRight: 5} }
+                        disabled={ selected_variant.total_on_hand === 0?true:false }
                         onPress={() => {
-                            this.handleButtonPress();
+                            this.handleButtonPress(selected_variant);
                           }}
                     >
                         <Text>Agregar</Text>
@@ -152,7 +179,7 @@ class ProductDetail extends Component {
                                 width={1}
                                 thickness={3} 
                                 text="Descripción" 
-                                textStyles={customStylesHere} 
+                                textStyles={customStylesHere}
                             />
                         </CardItem>
                         <CardItem cardBody>
@@ -177,11 +204,6 @@ class ProductDetail extends Component {
                             </List>
                         </CardItem>
                     </Card>
-                    
-                    {/* Modal para agregar al carrito */}
-                    <Modal isVisible={this.state.visibleModal === 1}>
-                        {this._renderModalContent(item)}
-                    </Modal>
                 </Content>
             </Container>
 
@@ -190,7 +212,7 @@ class ProductDetail extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state.order);
+    //console.log(state.order);
     return {
         state
     };
@@ -202,17 +224,3 @@ const customStylesHere = {
     fontWeight: "bold",
     fontSize: 18
 }
-const styles = StyleSheet.create({
-    modalContent: {
-      backgroundColor: 'white',
-      padding: 22,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 4,
-      borderColor: 'rgba(0, 0, 0, 0.1)',
-    },
-    bottomModal: {
-      justifyContent: 'flex-end',
-      margin: 0,
-    },
-  });

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Scene, Router, Stack } from 'react-native-router-flux';
-import { Text, Badge } from 'native-base'
+//import { Text, Badge } from 'native-base'
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import ProductDetail from '../screens/HomeScreen/ProductDetail'
 
 import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+//import SettingsScreen from '../screens/SettingsScreen';
 //import User from './components/User';
 import TabBarIcon from '../components/TabBarIcon';
 import BadgedTabBarIcon from '../components/BadgedTabBarIcon';
@@ -45,7 +45,7 @@ const AppNavigator = () => {
             </Scene>  
 
             <Scene 
-                key="LinksWrapper"
+                key="CartWrapper"
                 icon={({ focused }) => (
                     <BadgedTabBarIcon
                         focused={focused}
@@ -62,6 +62,28 @@ const AppNavigator = () => {
                     key="Links"
                     component={LinksScreen}
                     title="Links"
+                //iconName='links'
+                />
+            </Scene>
+
+            <Scene 
+                key="UserWrapper"
+                icon={({ focused }) => (
+                    <TabBarIcon
+                        focused={focused}
+                        name={
+                            Platform.OS === 'ios' 
+                                ? `ios-person${focused ? '' : '-outline'}` 
+                                : 'md-person'
+                        }
+                    />
+                )}
+                tabBarLabel='User'
+            >
+                <Scene
+                    key="User"
+                    component={LinksScreen}
+                    title="User"
                 //iconName='links'
                 />
             </Scene>

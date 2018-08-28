@@ -24,7 +24,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isCreating: false,
-                //orderNumber: action.payload.number,
+                orderNumber: action.payload.number,
                 order: action.payload
             }
         case CREATING_ORDER_ERROR:

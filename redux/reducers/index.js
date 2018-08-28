@@ -6,5 +6,6 @@ import OrderReducer from './OrderReducer';
 export default combineReducers({
     productsList: ProductsReducer,
     cart: CartReducer,
-    order: OrderReducer
+    order: OrderReducer,
+    user: {token:null}
 });

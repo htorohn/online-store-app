@@ -27,7 +27,7 @@ class BadgedTabBarIcon extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {itemCount: state.cart.itemCount}     ;
+    return {itemCount: state.cart.itemCount}
 };
 
 export default connect(mapStateToProps, null)(BadgedTabBarIcon);
