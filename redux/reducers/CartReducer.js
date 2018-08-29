@@ -14,7 +14,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 itemCount: state.itemCount + action.payload.line_item.quantity,
-                cart: state.cart.push(action.payload)
+                cart: [...state.cart, action.payload]
             }
         case REMOVE_PRODUCT_FROM_CART:
             return {

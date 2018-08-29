@@ -12,27 +12,29 @@ import { newOrderParams } from './utils'
 export const addProductToCart = (product) => {
     
     return (dispatch, getState) => {
-        //console.log("Number: " + getState().order.id)
-        let order = getState().order;
+        console.log(getState().order)
+        let current_order = getState().order
+        let line_item = product.line_item
         //let tokenParam = tokenForAPI(null, order.order_token);
         //console.log(tokenParam)
-        if (order.id === undefined) {
+        //if (order.order.id === undefined) {
+        if (current_order.orderNumber == "") {
             console.log("voy a crear la orden")
             return createOrder(newOrderParams)
                 .then((response) => {
                     //console.log("Se creo la orden")
-                    console.log(response)
+                    //console.log(response)
                     if (response.number === undefined){
-                        console.log(error)
+                        //console.log(error)
                         dispatch({ type: CREATING_ORDER_FAILURE });
                         return
                     }
                     else {
+                        console.log(response)
                         dispatch({ type: CREATING_ORDER_SUCCESS, payload: response });
                         order_number = response.number
                         order_token = response.token
-                        console.log(order_number)
-                        line_item = product.line_item
+                        //console.log(order_number)
                         return addLineItem({line_item, order_number, order_token, product})
                             .then((response) => {
                                 if(response.error === undefined){
@@ -52,6 +54,20 @@ export const addProductToCart = (product) => {
                 //     console.log(error)
                 //     dispatch({ type: CREATING_ORDER_FAILURE });
                 // })
+        } else {
+            console.log("La orden ya existe")
+
+            let order_number = current_order.order.number
+            let order_token = current_order.order.token
+            return addLineItem({line_item, order_number, order_token, product})
+                .then((response) => {
+                    if(response.error === undefined){
+                        dispatch({ type: ADD_PRODUCT_TO_CART, payload: product })
+                    }
+                    else {
+                        dispatch({ type: DISPLAY_ERROR, payload: error})
+                    }
+                })
         }
     };
 };
