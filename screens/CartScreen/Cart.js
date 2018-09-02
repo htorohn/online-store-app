@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Content, Body, Text, Icon, Button} from 'native-base'
+import { 
+    Container,
+    Content, 
+    Body, 
+    Text, 
+    Icon, 
+    Button,
+    Footer
+} from 'native-base'
 import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux';
 
@@ -32,6 +40,15 @@ class ProductDetail extends Component {
         return(
             <Container>
                 <Text>Agregar</Text>
+                <Footer>
+                    <Button
+                        block
+                    >
+                        <Text>
+                            Checkout
+                        </Text>
+                    </Button>
+                </Footer>
             </Container>
         )
     }   

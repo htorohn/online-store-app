@@ -21,6 +21,9 @@ export const getOrder = () => {
             request
                 .get(`${MAIN_URL}/api/v1/orders/${current_order.orderNumber}`)
                 .set('Content-Type', 'application/json')
+                .query({
+                    order_token: current_order.order.token
+                })
                 .then ((response) => {
                     //console.log(response.body)
                     dispatch({ type: ORDER_FETCH_SUCCESS, payload: response.body });
