@@ -17,12 +17,14 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: true,
+                error:false,
                 products: {}
             }
         case PRODUCTS_FETCH_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
+                error: false,
                 products: action.payload
             }
         case PRODUCTS_FETCH_ERROR:

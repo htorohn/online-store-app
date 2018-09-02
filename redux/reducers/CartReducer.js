@@ -5,6 +5,7 @@ import {
 
 const INITIAL_STATE = {
     itemCount: 0,
+    cartTotal: 0,
     cart: []
 };
 
@@ -14,7 +15,8 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 itemCount: state.itemCount + action.payload.line_item.quantity,
-                cart: [...state.cart, action.payload]
+                cart: [...state.cart, action.payload],
+                cartTotal: state.cartTotal + action.payload.variant.price *  action.payload.line_item.quantity
             }
         case REMOVE_PRODUCT_FROM_CART:
             return {

@@ -3,23 +3,47 @@ import {
     REMOVE_PRODUCT_FROM_CART,
     CREATING_ORDER_SUCCESS,
     CREATING_ORDER_FAILURE,
+    ORDER_FETCHING,
+    ORDER_FETCH_SUCCESS,
+    ORDER_FETCH_FAILURE,
     DISPLAY_ERROR
 } from './types'
 import { MAIN_URL } from '../../constants/Config'
 //import { _HEADERS } from '../../constants/Headers'
 import { newOrderParams } from './utils'
 
+export const getOrder = () => {
+    return (dispatch, getState) => {
+        let current_order = getState().order
+        if (current_order.orderNumber != "") {
+            dispatch({ type: ORDER_FETCHING })
+            var request = require('superagent')
+            request
+                .get(`${MAIN_URL}/api/v1/orders/${current_order.orderNumber}`)
+                .set('Content-Type', 'application/json')
+                .then ((response) => {
+                    //console.log(response.body)
+                    dispatch({ type: ORDER_FETCH_SUCCESS, payload: response.body });
+                })
+                .catch ((error) => {
+                    console.log(error);
+                    dispatch({ type: ORDER_FETCH_FAILURE, payload: error})
+                })
+        }
+    }
+}
+
 export const addProductToCart = (product) => {
     
     return (dispatch, getState) => {
-        console.log(getState().order)
+        //console.log(getState().order)
         let current_order = getState().order
         let line_item = product.line_item
         //let tokenParam = tokenForAPI(null, order.order_token);
         //console.log(tokenParam)
         //if (order.order.id === undefined) {
         if (current_order.orderNumber == "") {
-            console.log("voy a crear la orden")
+            //console.log("voy a crear la orden")
             return createOrder(newOrderParams)
                 .then((response) => {
                     //console.log("Se creo la orden")
@@ -30,7 +54,7 @@ export const addProductToCart = (product) => {
                         return
                     }
                     else {
-                        console.log(response)
+                        //console.log(response)
                         dispatch({ type: CREATING_ORDER_SUCCESS, payload: response });
                         order_number = response.number
                         order_token = response.token
@@ -55,7 +79,7 @@ export const addProductToCart = (product) => {
                 //     dispatch({ type: CREATING_ORDER_FAILURE });
                 // })
         } else {
-            console.log("La orden ya existe")
+            //console.log("La orden ya existe")
 
             let order_number = current_order.order.number
             let order_token = current_order.order.token
@@ -81,7 +105,7 @@ export const removeProductFromCart = () => {
 //------ Funciones privadas
 
 const createOrder = (param) => {
-    console.log("estoy en crear orden")
+    //console.log("estoy en crear orden")
     var request = require('superagent')
     return request
         .post(`${MAIN_URL}/api/v1/orders`)
@@ -94,7 +118,7 @@ const createOrder = (param) => {
             }
         })
         .then((response) => {
-            console.log(response.body)
+            //console.log(response.body)
             //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
             return response.body;
         })
@@ -119,7 +143,7 @@ const addLineItem = (params) => {
             })
             .set('Content-Type', 'application/json')
             .then((response) => {
-                console.log(response.body)
+                //console.log(response.body)
                 //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                 return response.body
             })

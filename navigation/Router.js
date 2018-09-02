@@ -4,7 +4,7 @@ import { Scene, Router, Stack } from 'react-native-router-flux';
 //import { Text, Badge } from 'native-base'
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import ProductDetail from '../screens/HomeScreen/ProductDetail'
-
+import Cart from '../screens/CartScreen/Cart'
 import LinksScreen from '../screens/LinksScreen';
 //import SettingsScreen from '../screens/SettingsScreen';
 //import User from './components/User';
@@ -60,7 +60,7 @@ const AppNavigator = () => {
             >
                 <Scene
                     key="Links"
-                    component={LinksScreen}
+                    component={Cart}
                     title="Links"
                 //iconName='links'
                 />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FlatList, Image, TouchableWithoutFeedback, Text } from 'react-native';
-import { Container, Content, Card, CardItem, Spinner, Left, Right } from 'native-base';
+import { Container, Content, Card, CardItem, Spinner, Left, Body, Icon, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { productsFetch } from '../../redux/actions';
 //import { MAIN_URL } from '../../constants/Config';
@@ -49,7 +49,7 @@ class ProductList extends Component {
     }
 
     render() {
-        //console.log(this.props);
+        //console.log(this.props.productsList);
         if (this.props.productsList.isFetching){
             return (
                 <Container>
@@ -62,15 +62,25 @@ class ProductList extends Component {
         if (this.props.productsList.error){
             return (
                 <Container>
-                    <Content contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
-                        <Text>Hay un error</Text>
+                    <Content contentContainerStyle={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
+                        <Text style={{fontSize: 20}}>Oh no! Hay un problema</Text>
+                            <Button 
+                                iconLeft
+                                transparent
+                                primary
+                                block
+                                large
+                                onPress={()=>{this.props.productsFetch()}}
+                            >
+                                <Icon ios='ios-refresh' android="md-refresh" style={{fontSize: 50}} />
+                            </Button>
                     </Content>
                 </Container>
             );
         }
         return (
             <FlatList 
-                data={this.props.productsList.products}
+                data={this.props.productsList.products.products}
                 style={{ flex: 1 }}
                 renderItem={({ item }) => this.renderItem(item)}
                 keyExtractor={this._keyExtractor}
@@ -84,7 +94,7 @@ class ProductList extends Component {
 const mapStateToProps = state => {
     //console.log(state)
     if (state.productsList.products) {
-        const productsList = state.productsList.products;
+        const productsList = state.productsList;
         //console.log(productsList);
         return { productsList };
     }

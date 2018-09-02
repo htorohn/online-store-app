@@ -11,6 +11,9 @@ export const REMOVE_PRODUCT_FROM_CART = 'remove_product_from_cart';
 export const CREATING_ORDER = 'creating_order';
 export const CREATING_ORDER_SUCCESS = 'creating_order_success';
 export const CREATING_ORDER_FAILURE = 'creating_order_failure';
+export const ORDER_FETCHING = 'order_fetching';
+export const ORDER_FETCH_SUCCESS = 'order_fetch_success';
+export const ORDER_FETCH_FAILURE = 'order_fetch_failure';
 
 //Error
 export const DISPLAY_ERROR = 'display_error';
