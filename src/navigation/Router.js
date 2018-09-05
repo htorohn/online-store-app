@@ -59,9 +59,9 @@ const AppNavigator = () => {
                 tabBarLabel='Cart'
             >
                 <Scene
-                    key="Links"
+                    key="Cart"
                     component={Cart}
-                    title="Links"
+                    title="Carrito de Compra"
                 //iconName='links'
                 />
             </Scene>

@@ -47,7 +47,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                order: payload,
+                order: action.payload,
                 error: false
             }
         case ORDER_FETCH_FAILURE:

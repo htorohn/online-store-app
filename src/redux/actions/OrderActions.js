@@ -150,8 +150,8 @@ const addLineItem = (params) => {
                 //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                 return response.body
             })
-            // .catch((error) => {
-            //     //dispatch({ type: DISPLAY_ERROR, payload: error})
-            //     return error
-            // })
+            .catch((error) => {
+                //dispatch({ type: DISPLAY_ERROR, payload: error})
+                return error
+            })
 }

@@ -49,7 +49,7 @@ class ProductList extends Component {
     }
 
     render() {
-        //console.log(this.props.productsList);
+        //console.log("products List", this.props.productsList);
         if (this.props.productsList.isFetching){
             return (
                 <Container>

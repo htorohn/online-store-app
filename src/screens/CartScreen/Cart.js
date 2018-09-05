@@ -39,7 +39,9 @@ class ProductDetail extends Component {
         }
         return(
             <Container>
-                <Text>Agregar</Text>
+                <Content>
+                    <Text>Agregar</Text>
+                </Content>
                 <Footer>
                     <Button
                         block
