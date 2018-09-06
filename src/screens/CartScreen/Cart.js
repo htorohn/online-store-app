@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { FlatList, Image, TouchableWithoutFeedback } from 'react-native';
 import { 
     Container,
     Content, 
@@ -7,7 +8,13 @@ import {
     Text, 
     Icon, 
     Button,
-    Footer
+    Footer,
+    Card,
+    CardItem,
+    Left,
+    Right,
+    Thumbnail,
+    ListItem
 } from 'native-base'
 import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux';
@@ -17,7 +24,35 @@ class ProductDetail extends Component {
         this.props.getOrder();
     }
 
+    _keyExtractor = (item) => item.variant.id;
+
+    renderItem(item) {
+        //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
+        //console.log(item)
+        const { variant } = item
+        return (
+            <TouchableWithoutFeedback onPress={() => Actions.ProductDetail({item})}>
+                <Content>
+                <ListItem thumbnail>
+                    <Left>
+                        <Thumbnail square source={{ uri: `${variant.images[0].mini_url}` }} />
+                    </Left>
+                    <Body>
+                        <Text>Hola Mundo</Text>
+                        <Text numberOfLines={1}>{variant.name}</Text>
+                    </Body>
+                    <Right>
+                        <Text>{variant.display_price}</Text>
+                    </Right>
+                </ListItem>
+                </Content>
+            </TouchableWithoutFeedback>
+        );
+    }
+
     render(){
+        const { cart, order } = this.props
+        console.log(order)
         if (this.props.itemCount === 0){
             return(
                 <Container>
@@ -40,16 +75,23 @@ class ProductDetail extends Component {
         return(
             <Container>
                 <Content>
-                    <Text>Agregar</Text>
+                    <FlatList 
+                        data={cart.cart}
+                        style={{ flex: 1 }}
+                        renderItem={({ item }) => this.renderItem(item)}
+                        keyExtractor={this._keyExtractor}
+                    />
                 </Content>
                 <Footer>
+                    <Container>
                     <Button
-                        block
+                        full
                     >
                         <Text>
-                            Checkout
+                            {`Checkout ${order.order.display_item_total}`}
                         </Text>
                     </Button>
+                    </Container>
                 </Footer>
             </Container>
         )
@@ -57,8 +99,8 @@ class ProductDetail extends Component {
 }
 
 mapStateToProps = (state) => {
-    console.log(state.cart)
-    return state.cart
+    //console.log(state.order)
+    return state
 }
 
 export default connect(mapStateToProps, { getOrder })(ProductDetail)

@@ -58,7 +58,7 @@ export default class App extends React.Component {
       }),
       SecureStore.getItemAsync('ecommerceState')
         .then((ecommerceState) => {
-          console.log("ecommerce", ecommerceState)
+          //console.log("ecommerce", ecommerceState)
           if (ecommerceState !== null){
             this.setState({initial_state: JSON.parse(ecommerceState)})
           }
