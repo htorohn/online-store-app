@@ -69,24 +69,6 @@ export default class App extends React.Component {
     ]);
   }
 
-  // _loadInitialState = async () => {
-  //   console.log("Vamos a obtener el estado")
-  //   try {
-  //     const retrievedState = await AsyncStorage.getItem('reduxStore')
-  //     if (retrievedState !== null) {
-  //       // We have data!!
-  //       console.log("initial_State", retrievedState)
-  //       return retrievedState
-  //     } else {
-  //       return {}
-  //     }
-  //    } catch (error) {
-  //      console.log('error:', error)
-  //      return {}
-  //      // Error retrieving data
-  //    }
-  // };
-
   _handleLoadingError = error => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry

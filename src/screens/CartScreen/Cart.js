@@ -14,7 +14,8 @@ import {
     Left,
     Right,
     Thumbnail,
-    ListItem
+    ListItem,
+    FooterTab
 } from 'native-base'
 import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux';
@@ -24,11 +25,11 @@ class ProductDetail extends Component {
         this.props.getOrder();
     }
 
-    _keyExtractor = (item) => item.variant.id;
+    _keyExtractor = (item) => item.variant.id.toString();
 
     renderItem(item) {
         //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
-        //console.log(item)
+        console.log("item:",item)
         const { variant } = item
         return (
             <TouchableWithoutFeedback onPress={() => Actions.ProductDetail({item})}>
@@ -38,8 +39,8 @@ class ProductDetail extends Component {
                         <Thumbnail square source={{ uri: `${variant.images[0].mini_url}` }} />
                     </Left>
                     <Body>
-                        <Text>Hola Mundo</Text>
                         <Text numberOfLines={1}>{variant.name}</Text>
+                        <Text>{`Qty: ${item.line_item.quantity}`}</Text>
                     </Body>
                     <Right>
                         <Text>{variant.display_price}</Text>
@@ -52,8 +53,8 @@ class ProductDetail extends Component {
 
     render(){
         const { cart, order } = this.props
-        console.log(order)
-        if (this.props.itemCount === 0){
+        //console.log(order)
+        if (cart.itemCount === 0){
             return(
                 <Container>
                     <Content contentContainerStyle={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
@@ -82,17 +83,20 @@ class ProductDetail extends Component {
                         keyExtractor={this._keyExtractor}
                     />
                 </Content>
-                <Footer>
-                    <Container>
+                {/* <Footer>
+                    {/* <FooterTab>
+                    {/* <Body>
                     <Button
                         full
+                        //style={{ position: "absolute", bottom: 0, alignSelf: "center", marginBottom: 10 }}
                     >
                         <Text>
                             {`Checkout ${order.order.display_item_total}`}
                         </Text>
                     </Button>
-                    </Container>
-                </Footer>
+                    {/* </Body>
+                    {/* </FooterTab>
+                </Footer> */}
             </Container>
         )
     }   

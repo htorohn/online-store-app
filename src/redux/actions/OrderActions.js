@@ -107,7 +107,7 @@ export const removeProductFromCart = () => {
 
 //------ Funciones privadas
 
-const createOrder = (param) => {
+const createOrder = () => {
     //console.log("estoy en crear orden")
     var request = require('superagent')
     return request
