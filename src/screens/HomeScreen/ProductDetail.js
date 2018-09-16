@@ -56,8 +56,17 @@ class ProductDetail extends Component {
     render() {
         //console.log(this.props.item)
         const { item } = this.props
-        const selected_variant = item.has_variants?item.variants[this.state.current_variant]:item.master
-        const images = _.map(selected_variant.images, 'large_url')
+        var selected_variant = {}
+        var images = _.map(item.master.images, 'large_url')
+        if (item.has_variants){
+            selected_variant = item.variants[this.state.current_variant]
+            images.push.apply(images, _.map(selected_variant.images, 'large_url'))
+        }else {
+            selected_variant = item.master
+        }
+        //const selected_variant = item.has_variants?item.variants[this.state.current_variant]:item.master
+        //const images = _.map(selected_variant.images, 'large_url')
+        
         const taxons = _.map(item.classifications, 'taxon')
         const properties = item.product_properties
         //console.log(properties)

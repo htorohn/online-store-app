@@ -25,12 +25,20 @@ class ProductDetail extends Component {
         this.props.getOrder();
     }
 
-    _keyExtractor = (item) => item.variant.id.toString();
+    _keyExtractor = (item) => {
+        //console.log("key extractor", item)
+        return item.variant.id.toString()
+    }
 
     renderItem(item) {
         //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
-        console.log("item:",item)
+        //console.log("item:",item)
         const { variant } = item
+        // if (item.button) {
+        //     return (
+        //         item.button
+        //     )
+        // }
         return (
             <TouchableWithoutFeedback onPress={() => Actions.ProductDetail({item})}>
                 <Content>
@@ -52,8 +60,25 @@ class ProductDetail extends Component {
     }
 
     render(){
-        const { cart, order } = this.props
-        //console.log(order)
+        let { cart, order } = this.props
+        //console.log("cart", cart)
+        //var data = JSON.parse(JSON.stringify(cart.cart))
+        //data.push(cart.cart)
+        // const button = {
+        //     variant: {id: -1},
+        //     button:  function() {return(<Button
+        //         transparent
+        //         primary
+        //         block 
+        //         large 
+        //         onPress={()=>{console.log("presionaron el boton")}}
+        //      />)}
+        // }
+        //console.log("boton", button)
+        //var data = cart.cart.concat(button)
+        //data.push(button)
+        //const buttonIndex = [data.length - 1]
+        //console.log("data", data)
         if (cart.itemCount === 0){
             return(
                 <Container>
@@ -81,22 +106,18 @@ class ProductDetail extends Component {
                         style={{ flex: 1 }}
                         renderItem={({ item }) => this.renderItem(item)}
                         keyExtractor={this._keyExtractor}
+                        //stickyHeaderIndices={buttonIndex}
                     />
-                </Content>
-                {/* <Footer>
-                    {/* <FooterTab>
-                    {/* <Body>
                     <Button
-                        full
-                        //style={{ position: "absolute", bottom: 0, alignSelf: "center", marginBottom: 10 }}
+                        transparent
+                        primary
+                        block 
+                        large 
+                        onPress={()=>{console.log("presionaron el boton")}}
                     >
-                        <Text>
-                            {`Checkout ${order.order.display_item_total}`}
-                        </Text>
+                    <Text>Checkout</Text>
                     </Button>
-                    {/* </Body>
-                    {/* </FooterTab>
-                </Footer> */}
+                </Content>
             </Container>
         )
     }   
