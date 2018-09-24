@@ -48,7 +48,7 @@ class ProductDetail extends Component {
         }
         this.props.addProductToCart({variant, line_item})
             .then (() => {
-                //alert("Producto Agregado!")
+                alert("Producto Agregado!")
                 console.log("Producto Agregado")
             })
     }
@@ -174,7 +174,7 @@ class ProductDetail extends Component {
                     <Button 
                         block 
                         style={ {marginLeft: 5, marginRight: 5} }
-                        disabled={ selected_variant.total_on_hand === 0?true:false }
+                        disabled={ selected_variant.total_on_hand === 0?true:false }//|| this.props.state.cart.addingProductToCart?true:false }
                         onPress={() => {
                             this.handleButtonPress(selected_variant);
                           }}
