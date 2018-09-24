@@ -47,9 +47,9 @@ class ProductDetail extends Component {
         }
         this.props.addProductToCart({variant, line_item})
             .then (() => {
-                alert("Producto Agregado!")
+                //alert("Producto Agregado!")
+                console.log("Producto Agregado")
             })
-        
     }
 
  

@@ -15,6 +15,7 @@ import { newOrderParams } from './utils'
 export const getOrder = () => {
     return (dispatch, getState) => {
         let current_order = getState().order
+        //console.log("current order", current_order)
         if (current_order.orderNumber != "") {
             dispatch({ type: ORDER_FETCHING })
             var request = require('superagent')
@@ -65,7 +66,9 @@ export const addProductToCart = (product) => {
                         return addLineItem({line_item, order_number, order_token, product})
                             .then((response) => {
                                 if(response.error === undefined){
-                                    dispatch({ type: ADD_PRODUCT_TO_CART, payload: product })
+                                    //console.log("response", response)
+                                    dispatch({ type: ADD_PRODUCT_TO_CART, payload: response })
+                                    //getOrder()
                                 }
                                 else {
                                     dispatch({ type: DISPLAY_ERROR, payload: error})
@@ -89,7 +92,8 @@ export const addProductToCart = (product) => {
             return addLineItem({line_item, order_number, order_token, product})
                 .then((response) => {
                     if(response.error === undefined){
-                        dispatch({ type: ADD_PRODUCT_TO_CART, payload: product })
+                        dispatch({ type: ADD_PRODUCT_TO_CART, payload: response })
+                        //getOrder()
                     }
                     else {
                         dispatch({ type: DISPLAY_ERROR, payload: error})
@@ -146,7 +150,7 @@ const addLineItem = (params) => {
             })
             .set('Content-Type', 'application/json')
             .then((response) => {
-                //console.log(response.body)
+                console.log("add line item", response.body)
                 //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                 return response.body
             })

@@ -60,7 +60,7 @@ export default class App extends React.Component {
         .then((ecommerceState) => {
           //console.log("ecommerce", ecommerceState)
           if (ecommerceState !== null){
-            //this.setState({initial_state: JSON.parse(ecommerceState)})
+            this.setState({initial_state: JSON.parse(ecommerceState)})
           }
         })
         .catch((error) => {

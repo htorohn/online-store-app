@@ -10,6 +10,7 @@ import {
 const INITIAL_STATE = {
     isFetching: false,
     isCreating: false,
+    //isUpdated: false,
     orderNumber: "",
     order: {},
     error: false
@@ -48,6 +49,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isFetching: false,
                 order: action.payload,
+                //isUpdated: true,
                 error: false
             }
         case ORDER_FETCH_FAILURE:

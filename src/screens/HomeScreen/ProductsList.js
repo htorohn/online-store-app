@@ -18,14 +18,14 @@ class ProductList extends Component {
         this.props.productsFetch();
     }
 
-    _keyExtractor = (item) => item.id;
+    _keyExtractor = (item) => item.id.toString();
 
     renderItem(item) {
         //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
         return (
             <TouchableWithoutFeedback onPress={() => Actions.ProductDetail({item})}>
 
-                <Card>
+                <Card style={{flex: 1}}>
                     <CardItem cardBody>
                         <Image 
                             source={{ uri: `${item.master.images[0].product_url}` }}
@@ -79,6 +79,7 @@ class ProductList extends Component {
             );
         }
         return (
+            <Container>
             <FlatList 
                 data={this.props.productsList.products.products}
                 style={{ flex: 1 }}
@@ -87,6 +88,7 @@ class ProductList extends Component {
                 numColumns={2}
 
             />
+            </Container>
         );
     }
 }

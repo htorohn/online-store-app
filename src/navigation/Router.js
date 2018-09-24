@@ -14,7 +14,7 @@ import BadgedTabBarIcon from '../components/BadgedTabBarIcon';
 const AppNavigator = () => {
     return (
       <Router sceneStyle={{ backgroundColor: 'white' }}>
-        <Scene key="root" tabs tabBarStyle={{ marginTop:25 }} type="reset" showLabel={true} >
+        <Scene key="root" tabs type="reset" showLabel={true} >
             <Scene 
                 key="ProductsListWrapper"
                 icon={({ focused }) => (
@@ -62,6 +62,8 @@ const AppNavigator = () => {
                     key="Cart"
                     component={Cart}
                     title="Carrito de Compra"
+                    //focused
+                    //onEnter={this.onEnterCart}
                 //iconName='links'
                 />
             </Scene>
