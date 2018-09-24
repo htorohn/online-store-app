@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import { AsyncStorage } from "react-native"
 import { AppLoading, Asset, Font, Icon, SecureStore } from 'expo'
+import { Root } from 'native-base'
 import reducers from './src/redux/reducers'
 //import AppNavigator from './navigation/AppNavigator';
 import AppNavigator from './src/navigation/Router'
@@ -32,10 +33,12 @@ export default class App extends React.Component {
       const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally));
       return (
         <Provider store={store}>
-          <View style={styles.container}>
+          {/* <View style={styles.container}> */}
+          <Root>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <AppNavigator />
-          </View>
+            </Root>
+          {/* </View> */}
         </Provider>          
       );
     }
@@ -60,7 +63,7 @@ export default class App extends React.Component {
         .then((ecommerceState) => {
           //console.log("ecommerce", ecommerceState)
           if (ecommerceState !== null){
-            //this.setState({initial_state: JSON.parse(ecommerceState)})
+            this.setState({initial_state: JSON.parse(ecommerceState)})
           }
         })
         .catch((error) => {

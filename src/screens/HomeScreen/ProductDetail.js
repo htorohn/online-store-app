@@ -17,7 +17,8 @@ import {
     Picker,
     Icon,
     Right,
-    Spinner
+    Spinner,
+    Toast
 } from 'native-base'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
@@ -31,7 +32,7 @@ class ProductDetail extends Component {
         this.state = {
           current_variant: 0,
           qty: 1,
-          visibleModal: null
+          showToast: false
         };
     }
 
@@ -48,7 +49,12 @@ class ProductDetail extends Component {
         }
         this.props.addProductToCart({variant, line_item})
             .then (() => {
-                alert("Producto Agregado!")
+                //alert("Producto Agregado!")
+                Toast.show({
+                    text: "Producto Agregado!",
+                    buttonText: "Okay",
+                    duration: 2000
+                  })
                 console.log("Producto Agregado")
             })
     }

@@ -66,7 +66,7 @@ class ProductDetail extends PureComponent {
                         <Thumbnail square source={{ uri: `${variant.images[0].small_url}` }} />
                     </Left>
                     <Body>
-                        <Text numberOfLines={1}>{variant.name}</Text>
+                        <Text bold numberOfLines={1}>{variant.name}</Text>
                         {variant_option}
                         <Text>{`Qty: ${item.quantity}`}</Text>
                     </Body>
