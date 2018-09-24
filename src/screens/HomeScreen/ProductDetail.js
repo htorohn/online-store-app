@@ -16,7 +16,8 @@ import {
     H3,
     Picker,
     Icon,
-    Right
+    Right,
+    Spinner
 } from 'native-base'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
@@ -54,7 +55,7 @@ class ProductDetail extends Component {
 
  
     render() {
-        //console.log(this.props.item)
+        console.log("Product Props", this.props)
         const { item } = this.props
         var selected_variant = {}
         var images = _.map(item.master.images, 'large_url')
@@ -178,7 +179,7 @@ class ProductDetail extends Component {
                             this.handleButtonPress(selected_variant);
                           }}
                     >
-                        <Text>Agregar</Text>
+                        {this.props.state.cart.addingProductToCart?<Spinner color='white'/>:<Text>Agregar</Text>}
                     </Button>
                     <Card transparent >
                         <CardItem header>

@@ -1,4 +1,5 @@
 import {
+    ADDING_PRODUCT_TO_CART,
     ADD_PRODUCT_TO_CART,
     REMOVE_PRODUCT_FROM_CART,
     CREATING_ORDER_SUCCESS,
@@ -40,6 +41,7 @@ export const getOrder = () => {
 export const addProductToCart = (product) => {
     
     return (dispatch, getState) => {
+        dispatch({ type: ADDING_PRODUCT_TO_CART, payload: true})
         //console.log(getState().order)
         let current_order = getState().order
         let line_item = product.line_item
@@ -68,6 +70,7 @@ export const addProductToCart = (product) => {
                                 if(response.error === undefined){
                                     //console.log("response", response)
                                     dispatch({ type: ADD_PRODUCT_TO_CART, payload: response })
+                                    dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                                     //getOrder()
                                 }
                                 else {
@@ -93,6 +96,7 @@ export const addProductToCart = (product) => {
                 .then((response) => {
                     if(response.error === undefined){
                         dispatch({ type: ADD_PRODUCT_TO_CART, payload: response })
+                        dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                         //getOrder()
                     }
                     else {

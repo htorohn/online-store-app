@@ -1,4 +1,5 @@
 import {
+    ADDING_PRODUCT_TO_CART,
     ADD_PRODUCT_TO_CART,
     REMOVE_PRODUCT_FROM_CART
 } from '../actions/types';
@@ -8,12 +9,18 @@ const INITIAL_STATE = {
     //cartTotal: 0,
     line_items: [],
     checkout_steps: [],
-    shipments: []
+    shipments: [],
+    addingProductToCart: false
 
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case ADDING_PRODUCT_TO_CART:
+            return {
+                ...state,
+                addingProductToCart: action.payload
+            }
         case ADD_PRODUCT_TO_CART:
             //console.log("en el reducer", action.payload)
             return {

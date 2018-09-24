@@ -75,7 +75,7 @@ class ProductDetail extends PureComponent {
                     </Right>
                 </ListItem>
                  {/* </Content> */}
-             </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
         );
     }
 
