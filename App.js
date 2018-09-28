@@ -1,9 +1,8 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native'
+import { Platform, StatusBar } from 'react-native'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
-import { AsyncStorage } from "react-native"
 import { AppLoading, Asset, Font, Icon, SecureStore } from 'expo'
 import { Root } from 'native-base'
 import reducers from './src/redux/reducers'
@@ -82,10 +81,3 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
