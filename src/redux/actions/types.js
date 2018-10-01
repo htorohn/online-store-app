@@ -6,6 +6,8 @@ export const PRODUCTS_FETCHING = 'products_fectching'
 //Shopping Cart
 export const ADDING_PRODUCT_TO_CART = 'adding_product_to_cart'
 export const ADD_PRODUCT_TO_CART = 'add_product_to_cart'
+export const UPDATE_PRODUCT_ON_CART = 'update_product_on_cart'
+export const UPDATING_PRODUCT_ON_CART = 'updating_product_on_cart'
 export const REMOVE_PRODUCT_FROM_CART = 'remove_product_from_cart'
 
 //Orders

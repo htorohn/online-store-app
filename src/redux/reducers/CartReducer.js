@@ -1,7 +1,8 @@
 import {
     ADDING_PRODUCT_TO_CART,
     ADD_PRODUCT_TO_CART,
-    REMOVE_PRODUCT_FROM_CART
+    REMOVE_PRODUCT_FROM_CART,
+    UPDATE_PRODUCT_ON_CART
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -35,6 +36,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 itemCount: state.itemCount - 1
             }
+        case UPDATE_PRODUCT_ON_CART:
+            console.log("response on reducer", action.payload)
+            let index = state.line_items.map((item)=> item.id).indexOf(action.payload.id)
+            var updatedLineItems = Object.assign ([], state.line_items)
+            updatedLineItems.splice(index, 1, action.payload)
+            return {
+                ...state,
+                line_items: updatedLineItems
+            }
+
         default:
             return state;
     }

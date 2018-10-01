@@ -31,7 +31,7 @@ class ProductDetail extends PureComponent {
     // }
     
     componentWillMount(){
-        this.props.getOrder();
+        //this.props.getOrder();
     }
 
     // componentWillReceiveProps(){
@@ -58,6 +58,7 @@ class ProductDetail extends PureComponent {
                     {variant.options_text}
                 </Text>
         }
+        console.log(variant.images[0].small_url)
         return (
             <TouchableWithoutFeedback key={key} onPress={() => this.handleClick({item})}>
                 {/* <Content style={{flex: 1}}> */}
