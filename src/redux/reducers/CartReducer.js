@@ -37,13 +37,14 @@ export default (state = INITIAL_STATE, action) => {
                 itemCount: state.itemCount - 1
             }
         case UPDATE_PRODUCT_ON_CART:
-            console.log("response on reducer", action.payload)
             let index = state.line_items.map((item)=> item.id).indexOf(action.payload.id)
             var updatedLineItems = Object.assign ([], state.line_items)
             updatedLineItems.splice(index, 1, action.payload)
+            let newCount = updatedLineItems.reduce((count, item) => count + item.quantity,0)
             return {
                 ...state,
-                line_items: updatedLineItems
+                line_items: updatedLineItems,
+                itemCount: newCount
             }
 
         default:
