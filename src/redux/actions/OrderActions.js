@@ -45,7 +45,7 @@ export const addProductToCart = (product) => {
         dispatch({ type: ADDING_PRODUCT_TO_CART, payload: true})
         //console.log(getState().order)
         let current_order = getState().order
-        let line_item = product.line_item
+        const {line_item} = product
         if (current_order.orderNumber == "") {
             //Se va a crear una orden nueva
             return createOrder(newOrderParams)
@@ -90,7 +90,9 @@ export const addProductToCart = (product) => {
             }
             else {
                 console.log("El producto ya existe")
-                return updateLineItem({line_item, order_number, order_token, current_item})
+                const newQty = current_item.quantity + line_item.quantity
+                const item_id = current_item.id
+                return updateLineItem({line_item, order_number, order_token, newQty, item_id})
                     .then((response) => {
                         if(response.error === undefined){
                             dispatch({ type: UPDATE_PRODUCT_ON_CART, payload: response })
@@ -103,8 +105,32 @@ export const addProductToCart = (product) => {
                     })
             }
         }
-    };
-};
+    }
+}
+
+export const updateProductOnCart = (product) => {
+    return (dispatch, getState) => {
+        dispatch({ type: ADDING_PRODUCT_TO_CART, payload: true})
+        //console.log(getState().order)
+        let current_order = getState().order
+        const {item_id, line_item} = product
+        let order_number = current_order.order.number
+        let order_token = current_order.order.token
+        const newQty = line_item.quantity
+        return updateLineItem({line_item, order_number, order_token, newQty, item_id})
+            .then((response) => {
+                if(response.error === undefined){
+                    dispatch({ type: UPDATE_PRODUCT_ON_CART, payload: response })
+                    dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
+                    //dispatch({ type: UPDATING_PRODUCT_ON_CART, payload: false })
+                }
+                else {
+                    dispatch({ type: DISPLAY_ERROR, payload: error})
+                }
+            })
+    }
+
+}
 
 export const removeProductFromCart = () => {
     return (dispatch) => {
@@ -158,14 +184,14 @@ const addLineItem = (params) => {
 const updateLineItem = (params) => {
     var request = require('superagent')
         //const tokenParam = { order_token: params.order_token }
-        const {current_item, line_item, order_number, order_token} = params
+        const {newQty, line_item, order_number, order_token, item_id} = params
         return request
-            .put(`${MAIN_URL}/api/v1/orders/${order_number}/line_items/${current_item.id}`)
+            .put(`${MAIN_URL}/api/v1/orders/${order_number}/line_items/${item_id}`)
             //.query(tokenParam)
             .query({
                 line_item: {
                     variant_id: line_item.variant_id,
-                    quantity: current_item.quantity + line_item.quantity
+                    quantity: newQty
                 },
                 order_token: order_token
             })

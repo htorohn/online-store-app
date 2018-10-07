@@ -6,6 +6,7 @@ import {
     Content, 
     Body, 
     Text, 
+    H3,
     Icon, 
     Button,
     Footer,
@@ -16,10 +17,14 @@ import {
     Thumbnail,
     List,
     ListItem,
-    FooterTab
+    FooterTab,
+    Picker,
+    Toast
 } from 'native-base'
+//import NumericInput from 'react-native-numeric-input'
 import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux';
+import { updateProductOnCart } from '../../redux/actions'
 import OrderReducer from '../../redux/reducers/OrderReducer';
 
 class ProductDetail extends PureComponent {
@@ -47,6 +52,26 @@ class ProductDetail extends PureComponent {
         console.log("item", item)
     }
 
+    handleQtyChange(item, newQty) {
+        console.log("update item", item)
+        console.log("new qty", newQty)
+        let line_item = {
+            variant_id: item.variant.id,
+            quantity: newQty
+        }
+        const item_id = item.id
+        this.props.updateProductOnCart({item_id, line_item})
+            .then (() => {
+                //alert("Producto Agregado!")
+                Toast.show({
+                    text: "Carrito Actualizado!",
+                    buttonText: "Okay",
+                    duration: 2000
+                  })
+                console.log("Carrito Actualizado")
+            })
+    }
+
     renderItem(item, key) {
         //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
         console.log("item:",item)
@@ -58,6 +83,10 @@ class ProductDetail extends PureComponent {
                     {variant.options_text}
                 </Text>
         }
+        let cantidad = []
+        for (let i = 0; i < variant.total_on_hand; i++){
+            cantidad.push(i+1)
+        }
         console.log(variant.images[0].small_url)
         return (
             <TouchableWithoutFeedback key={key} onPress={() => this.handleClick({item})}>
@@ -67,12 +96,34 @@ class ProductDetail extends PureComponent {
                         <Thumbnail square source={{ uri: `${variant.images[0].small_url}` }} />
                     </Left>
                     <Body>
-                        <Text bold numberOfLines={1}>{variant.name}</Text>
+                        <H3 numberOfLines={1}>{variant.name}</H3>
+                        <Text style={{color: "red"}}>{item.single_display_amount}</Text>
                         {variant_option}
-                        <Text>{`Qty: ${item.quantity}`}</Text>
+                        {/* <Text>{`Qty: ${item.quantity}`}</Text> */}
+                        <Picker
+                            mode="dropdown"
+                            iosIcon={<Icon name="ios-arrow-down-outline" />}
+                            placeholderStyle={{ color: "#bfc6ea" }}
+                            placeholderIconColor="#007aff"
+                            //style={{ width: undefined }}
+                            selectedValue={item.quantity}
+                            onValueChange={(value) => {this.handleQtyChange(item, value)}}
+                        >
+                            {
+                                cantidad.map(
+                                    (qty, id) => {
+                                        return (                                        
+                                            <Picker.Item label={qty} value={qty} key={id} />
+                                        );
+                                    }
+                                )
+                            }
+                        </Picker>
                     </Body>
-                    <Right>
-                        <Text>{item.display_amount}</Text>
+                    <Right>            
+                        <Button iconCenter transparent danger>
+                            <Icon ios='ios-trash-outline' android='md-trash-outline' />
+                        </Button>
                     </Right>
                 </ListItem>
                  {/* </Content> */}
@@ -151,4 +202,4 @@ mapStateToProps = (state) => {
     return {cart, order}
 }
 
-export default connect(mapStateToProps, { getOrder })(ProductDetail)
+export default connect(mapStateToProps, { updateProductOnCart, getOrder })(ProductDetail)

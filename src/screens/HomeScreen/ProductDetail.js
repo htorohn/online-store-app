@@ -47,7 +47,7 @@ class ProductDetail extends Component {
             variant_id: variant.id,
             quantity: this.state.qty
         }
-        this.props.addProductToCart({variant, line_item})
+        this.props.addProductToCart({line_item})
             .then (() => {
                 //alert("Producto Agregado!")
                 Toast.show({
