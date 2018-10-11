@@ -52,7 +52,7 @@ class ProductDetail extends Component {
                 //alert("Producto Agregado!")
                 Toast.show({
                     text: "Producto Agregado!",
-                    buttonText: "Okay",
+                    buttonText: "Ok",
                     duration: 2000
                   })
                 console.log("Producto Agregado")

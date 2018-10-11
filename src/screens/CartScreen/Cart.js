@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, Image, TouchableWithoutFeedback } from 'react-native';
+import { FlatList, Image, TouchableWithoutFeedback, Alert, View } from 'react-native';
 import { 
     Container,
     Content, 
@@ -19,12 +19,13 @@ import {
     ListItem,
     FooterTab,
     Picker,
-    Toast
+    Toast,
+    Spinner
 } from 'native-base'
 //import NumericInput from 'react-native-numeric-input'
 import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux';
-import { updateProductOnCart } from '../../redux/actions'
+import { updateProductOnCart, removeProductFromCart } from '../../redux/actions'
 import OrderReducer from '../../redux/reducers/OrderReducer';
 
 class ProductDetail extends PureComponent {
@@ -52,6 +53,31 @@ class ProductDetail extends PureComponent {
         console.log("item", item)
     }
 
+    handleRemoveClick(item) {
+        Alert.alert(
+            'Eliminar Producto',
+            'Esta seguro que desea eliminar el producto?',
+            [
+                {text: 'Si', onPress: () => {
+                        console.log('Ok Pressed', item)
+                        this.props.removeProductFromCart(item)
+                            .then (() => {
+                                //alert("Producto Agregado!")
+                                Toast.show({
+                                    text: "Carrito Actualizado!",
+                                    buttonText: "Ok",
+                                    duration: 2000
+                                })
+                                console.log("Carrito Actualizado")
+                            })
+                    }
+                },
+                {text: 'Cancelar', onPress: () => console.log('Cancelar Pressed'), style: 'cancel'},
+            ],
+            { cancelable: true }
+        )
+    }
+
     handleQtyChange(item, newQty) {
         console.log("update item", item)
         console.log("new qty", newQty)
@@ -65,7 +91,7 @@ class ProductDetail extends PureComponent {
                 //alert("Producto Agregado!")
                 Toast.show({
                     text: "Carrito Actualizado!",
-                    buttonText: "Okay",
+                    buttonText: "Ok",
                     duration: 2000
                   })
                 console.log("Carrito Actualizado")
@@ -87,6 +113,27 @@ class ProductDetail extends PureComponent {
         for (let i = 0; i < variant.total_on_hand; i++){
             cantidad.push(i+1)
         }
+        let qtyPicker = null
+        qtyPicker = 
+            <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="ios-arrow-down-outline" />}
+                //placeholderStyle={{ color: "#bfc6ea" }}
+                //placeholderIconColor="#007aff"
+                style={{ width: 120 }}
+                selectedValue={item.quantity}
+                onValueChange={(value) => {this.handleQtyChange(item, value)}}
+            >
+                {
+                    cantidad.map(
+                        (qty, id) => {
+                            return (                                        
+                                <Picker.Item label={qty.toString()} value={qty} key={id} />
+                            );
+                        }
+                    )
+                }
+            </Picker>
         console.log(variant.images[0].small_url)
         return (
             <TouchableWithoutFeedback key={key} onPress={() => this.handleClick({item})}>
@@ -100,29 +147,16 @@ class ProductDetail extends PureComponent {
                         <Text style={{color: "red"}}>{item.single_display_amount}</Text>
                         {variant_option}
                         {/* <Text>{`Qty: ${item.quantity}`}</Text> */}
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<Icon name="ios-arrow-down-outline" />}
-                            placeholderStyle={{ color: "#bfc6ea" }}
-                            placeholderIconColor="#007aff"
-                            //style={{ width: undefined }}
-                            selectedValue={item.quantity}
-                            onValueChange={(value) => {this.handleQtyChange(item, value)}}
-                        >
-                            {
-                                cantidad.map(
-                                    (qty, id) => {
-                                        return (                                        
-                                            <Picker.Item label={qty} value={qty} key={id} />
-                                        );
-                                    }
-                                )
-                            }
-                        </Picker>
+                        {qtyPicker}
                     </Body>
                     <Right>            
-                        <Button iconCenter transparent danger>
-                            <Icon ios='ios-trash-outline' android='md-trash-outline' />
+                        <Button 
+                            iconCenter 
+                            transparent 
+                            danger 
+                            onPress={()=>{this.handleRemoveClick(item)}}
+                        >
+                            <Icon ios='ios-trash-outline' android='md-trash' />
                         </Button>
                     </Right>
                 </ListItem>
@@ -135,6 +169,23 @@ class ProductDetail extends PureComponent {
         let { cart, order } = this.props
         //console.log("order", order)
         console.log("data", cart)
+        let showLoader = null
+        if (cart.addingProductToCart) {
+            showLoader = 
+                <View style= {{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center' 
+                    }}
+                >
+                    <Spinner color='black' />
+                </View>
+        }
+
         if (cart.line_items.length == 0){
             return(
                 <Container>
@@ -169,11 +220,9 @@ class ProductDetail extends PureComponent {
                         renderItem={({ item }) => this.renderItem(item)}
                         keyExtractor={this._keyExtractor}
                         //stickyHeaderIndices={buttonIndex}
-                    />
-                    
-                    
-                        
+                    />    
                 </Content>
+                {showLoader} 
                 <Button
                     //transparent
                     primary
@@ -182,10 +231,10 @@ class ProductDetail extends PureComponent {
                     large 
                     onPress={()=>{console.log("presionaron el boton")}}
                     style={{
-                        position: 'absolute',
+                        //position: 'absolute',
                         bottom:0,
                         left:0,
-                        flex: 1,
+                        //flex: 1,
                         width: '100%'
                     }}
                 >
@@ -202,4 +251,4 @@ mapStateToProps = (state) => {
     return {cart, order}
 }
 
-export default connect(mapStateToProps, { updateProductOnCart, getOrder })(ProductDetail)
+export default connect(mapStateToProps, { removeProductFromCart, updateProductOnCart, getOrder })(ProductDetail)

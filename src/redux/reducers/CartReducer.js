@@ -16,6 +16,8 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
+    
+    let newLineItems = Object.assign([], state.line_items);
     switch (action.type) {
         case ADDING_PRODUCT_TO_CART:
             return {
@@ -29,9 +31,19 @@ export default (state = INITIAL_STATE, action) => {
                 line_items: [...state.line_items, action.payload],
             }
         case REMOVE_PRODUCT_FROM_CART:
+            let i = state.line_items.map((item)=> item.id).indexOf(action.payload)
+            let newQty = state.itemCount - state.line_items[i].quantity
+
+            newLineItems = newLineItems.filter( (lineItem) => {
+                return lineItem.id !== action.payload;
+              });
+        
+            //return Object.assign ( {}, state, { line_items: newLineItems, itemCount: newCount });
+
             return {
                 ...state,
-                itemCount: state.itemCount - 1
+                line_items: newLineItems,
+                itemCount: newQty
             }
         case UPDATE_PRODUCT_ON_CART:
             let index = state.line_items.map((item)=> item.id).indexOf(action.payload.id)
