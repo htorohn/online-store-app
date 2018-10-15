@@ -11,12 +11,16 @@ import { productsFetch } from '../../redux/actions';
 
 class ProductList extends Component {
     // static navigationOptions = {
-    //     title: 'Productos',
+    //     onRight: RightMenu,
     // };
 
     componentWillMount() {
         this.props.productsFetch();
     }
+
+    // componentDidMount() {
+    //     Actions.refresh({ rightTitle: RightMenu })
+    // }
 
     _keyExtractor = (item) => item.id.toString();
 

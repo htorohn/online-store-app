@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, Image, TouchableWithoutFeedback, Alert, View } from 'react-native';
+import { FlatList, TouchableWithoutFeedback, Alert, View } from 'react-native';
 import { 
     Container,
     Content, 
@@ -9,15 +9,10 @@ import {
     H3,
     Icon, 
     Button,
-    Footer,
-    Card,
-    CardItem,
     Left,
     Right,
     Thumbnail,
-    List,
     ListItem,
-    FooterTab,
     Picker,
     Toast,
     Spinner
@@ -197,7 +192,7 @@ class ProductDetail extends PureComponent {
                             primary
                             block 
                             large 
-                            onPress={()=>{Actions.pop()}}
+                            onPress={()=>{Actions.popTo('ProductsList')}}
                         >
                             <Text style={{fontSize: 18}}>Ir a la tienda</Text>
                         </Button>

@@ -1,36 +1,38 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+//import { connect } from 'react-redux';
+import { View, Text, Platform } from 'react-native';
 import { Icon } from 'expo';
 
 import Colors from '../constants/Colors';
 
-class BadgedTabBarIcon extends React.Component {
-  render() {
+export default BadgedTabBarIcon = ({focused, name, itemCount}) => {
+  //render() {
+    //console.log(focused, name, )
     return (
       <View style={styles.container}>
         {
-            this.props.itemCount > 0 ?
+            itemCount > 0 ?
             <View style={{ position: 'absolute', right: -5, top: 5, backgroundColor: 'red', borderRadius: 9, width: 18, height: 18, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white' }}>{this.props.itemCount}</Text>
+                <Text style={{ color: 'white' }}>{itemCount}</Text>
             </View> : null
         }
         <Icon.Ionicons
-          name={this.props.name}
+          name={name}
           size={26}
           //style={{ width: 25, height: 25, marginBottom: -3 }}
-          color={this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          //color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={Platform.OS === 'ios' ? Colors.tabIconSelected : 'white'}
         />
       </View>
     );
-  }
+  //}
 }
 
-const mapStateToProps = state => {
-    return {itemCount: state.cart.itemCount}
-};
+// const mapStateToProps = state => {
+//     return {itemCount: state.cart.itemCount}
+// };
 
-export default connect(mapStateToProps, null)(BadgedTabBarIcon);
+//export default connect(mapStateToProps, null)(BadgedTabBarIcon);
 
 const styles = {
   container: {

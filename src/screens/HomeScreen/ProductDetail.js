@@ -36,6 +36,10 @@ class ProductDetail extends Component {
         };
     }
 
+    static navigationOptions = {
+        title: 'Producto X',
+    };
+
     onVariantChange(key) {
         this.setState({
             current_variant: key
@@ -61,7 +65,7 @@ class ProductDetail extends Component {
 
  
     render() {
-        console.log("Product Props", this.props)
+        //console.log("Product Props", this.props)
         const { item } = this.props
         var selected_variant = {}
         var images = _.map(item.master.images, 'large_url')
