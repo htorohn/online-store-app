@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -32,6 +33,10 @@ class NavBar extends React.Component {
   // constructor(props) {
   //   super(props)
   // }
+    // static contextTypes = {
+    //     drawer: PropTypes.object
+    // }
+
 
   _renderLeft(index) {
     let backButton = null
@@ -50,10 +55,11 @@ class NavBar extends React.Component {
                 />
             </Button>
     }
+    console.log("context", this.context)
     return (
-        <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
+        <View style={{flexDirection: 'row', backgroundColor: 'transparent', marginLeft: 10}}>
             {backButton}
-            <Button transparent>
+            <Button transparent onPress={ () => Actions.drawerOpen() }>
                 <Icon 
                     name='menu' 
                     //size={26}
@@ -80,7 +86,7 @@ class NavBar extends React.Component {
                 focused={true}
                 name={
                     Platform.OS === 'ios' 
-                        ? 'ios-cart' //${focused ? '' : '-outline'}` 
+                        ? 'ios-cart-outline' //${focused ? '' : '-outline'}` 
                         : 'md-cart'
                 }
                 itemCount={this.props.itemCount}
@@ -94,7 +100,6 @@ class NavBar extends React.Component {
   render() {
     console.log("nav bar", this.props)
     return (
-    
           <Header>
               <Left style={{flex: 1}}>
                 {this._renderLeft(this.props.index)}
@@ -106,7 +111,6 @@ class NavBar extends React.Component {
                 {this._renderRight()}
               </Right>  
           </Header>
-      
     );
   }
 }

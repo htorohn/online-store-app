@@ -1,6 +1,10 @@
 import React from 'react';
-import { Scene, Router, Stack } from 'react-native-router-flux';
+import { Scene, Router, Stack, Drawer, Overlay, Modal, Lightbox } from 'react-native-router-flux'
+import { StackViewStyleInterpolator } from 'react-navigation-stack';
 //import { Text, Badge } from 'native-base'
+import NavBar from './NavBar'
+import DrawerMenu from './DrawerMenu'
+
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import ProductDetail from '../screens/HomeScreen/ProductDetail'
 import Cart from '../screens/CartScreen/Cart'
@@ -8,18 +12,21 @@ import LinksScreen from '../screens/LinksScreen';
 import RightMenu from './RightMenu'
 //import SettingsScreen from '../screens/SettingsScreen';
 //import User from './components/User';
-import NavBar from './NavBar'
+
 //import BadgedTabBarIcon from '../components/BadgedTabBarIcon';
+
+const transitionConfig = () => ({
+    screenInterpolator:
+      StackViewStyleInterpolator.forFadeFromBottomAndroid,
+  });
 
 const AppNavigator = () => {
     return (
       <Router sceneStyle={{ backgroundColor: 'white' }}>
-        {/* <Stack key="root" hideTabBar headerLayoutPreset="center">
-              <Scene key="productsList" title="Products" navBar={NavBar} component={ProductsList}/>
-              <Scene key="productDetail" navBar={NavBar} component={ProductDetail}/>
-              
-        </Stack> */}
-                <Stack key="root" >
+            
+                <Scene key="drawer"  hideNavBar drawer contentComponent={DrawerMenu} initial drawerPosition="left" drawerWidth={200} drawerLabel="Hi"
+                            >
+                    <Stack key="root" >
                     <Scene
                         key="ProductsList"
                         component={ProductsList}
@@ -44,59 +51,11 @@ const AppNavigator = () => {
                         //onEnter={this.onEnterCart}
                     //iconName='links'
                     />
-                </Stack>
-            {/* </Scene>   */}
-
-            {/* <Scene 
-                key="CartWrapper"
-                icon={({ focused }) => (
-                    <BadgedTabBarIcon
-                        focused={focused}
-                        name={
-                            Platform.OS === 'ios' 
-                                ? `ios-cart${focused ? '' : '-outline'}` 
-                                : 'md-cart'
-                        }
-                    />
-                )}
-                tabBarLabel='Cart'
-            >
-                <Scene
-                    key="Cart"
-                    component={Cart}
-                    title="Carrito de Compra"
-                    //focused
-                    //onEnter={this.onEnterCart}
-                //iconName='links'
-                />
-            </Scene>
-
-            <Scene 
-                key="UserWrapper"
-                icon={({ focused }) => (
-                    <TabBarIcon
-                        focused={focused}
-                        name={
-                            Platform.OS === 'ios' 
-                                ? `ios-person${focused ? '' : '-outline'}` 
-                                : 'md-person'
-                        }
-                    />
-                )}
-                tabBarLabel='User'
-            >
-                <Scene
-                    key="User"
-                    component={LinksScreen}
-                    title="User"
-                //iconName='links'
-                />
-            </Scene> */}
-            
+                    </Stack>
+                </Scene>                    
         {/* </Scene> */}
       </Router>
-    );
-};
+    )
+}
 
-
-export default AppNavigator;
+export default AppNavigator

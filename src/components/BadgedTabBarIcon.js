@@ -1,7 +1,8 @@
 import React from 'react';
 //import { connect } from 'react-redux';
 import { View, Text, Platform } from 'react-native';
-import { Icon } from 'expo';
+//import { Icon } from 'expo'
+import { Icon } from 'native-base'
 
 import Colors from '../constants/Colors';
 
@@ -16,12 +17,12 @@ export default BadgedTabBarIcon = ({focused, name, itemCount}) => {
                 <Text style={{ color: 'white' }}>{itemCount}</Text>
             </View> : null
         }
-        <Icon.Ionicons
+        <Icon
           name={name}
           size={26}
           //style={{ width: 25, height: 25, marginBottom: -3 }}
           //color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-          color={Platform.OS === 'ios' ? Colors.tabIconSelected : 'white'}
+          //color={Platform.OS === 'ios' ? Colors.tabIconSelected : 'white'}
         />
       </View>
     );
