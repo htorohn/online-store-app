@@ -3,7 +3,7 @@ import { Scene, Router, Stack, Drawer, Overlay, Modal, Lightbox } from 'react-na
 import { StackViewStyleInterpolator } from 'react-navigation-stack';
 //import { Text, Badge } from 'native-base'
 import NavBar from './NavBar'
-import DrawerMenu from './DrawerMenu'
+import DrawerContent from './DrawerContent'
 
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import ProductDetail from '../screens/HomeScreen/ProductDetail'
@@ -24,8 +24,16 @@ const AppNavigator = () => {
     return (
       <Router sceneStyle={{ backgroundColor: 'white' }}>
             
-                <Scene key="drawer"  hideNavBar drawer contentComponent={DrawerMenu} initial drawerPosition="left" drawerWidth={200} drawerLabel="Hi"
-                            >
+                <Drawer 
+                    key="drawer"  
+                    hideNavBar 
+                    //drawer 
+                    contentComponent={DrawerContent} 
+                    //initial 
+                    drawerPosition="left" 
+                    drawerWidth={300} 
+                    drawerLabel="Hi"
+                >
                     <Stack key="root" >
                     <Scene
                         key="ProductsList"
@@ -52,7 +60,7 @@ const AppNavigator = () => {
                     //iconName='links'
                     />
                     </Stack>
-                </Scene>                    
+                </Drawer>                    
         {/* </Scene> */}
       </Router>
     )
