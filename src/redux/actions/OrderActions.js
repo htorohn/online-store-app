@@ -90,6 +90,7 @@ export const addProductToCart = (product) => {
                     })
             }
             else {
+                //El producto ya existe en el carrito y solo actualizamos la cantidad
                 console.log("El producto ya existe")
                 const newQty = current_item.quantity + line_item.quantity
                 const item_id = current_item.id
@@ -159,5 +160,17 @@ export const removeProductFromCart = (product) => {
                     }
                 }
             })
+    }
+}
+
+export const productExistOnCart = (line_item) => {
+    return (getState) => {
+        const current_item = orderApi.lineItemExists(line_item, getState().cart.line_items)
+        if (current_item !== undefined) {
+            return current_item
+        } else {
+            return null
+        }
+
     }
 }

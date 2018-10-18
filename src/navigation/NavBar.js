@@ -40,7 +40,7 @@ class NavBar extends React.Component {
 
   _renderLeft(index) {
     let backButton = null
-    console.log("index",index)
+    //console.log("index",index)
     if (index !== 0) {
         backButton = 
             <Button transparent onPress={ () => Actions.pop() }>
@@ -55,7 +55,7 @@ class NavBar extends React.Component {
                 />
             </Button>
     }
-    console.log("context", this.context)
+    //console.log("context", this.context)
     return (
         <View style={{flexDirection: 'row', backgroundColor: 'transparent', marginLeft: 10}}>
             {backButton}
@@ -98,7 +98,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    console.log("nav bar", this.props)
+    //console.log("nav bar", this.props)
     return (
           <Header>
               <Left style={{flex: 1}}>

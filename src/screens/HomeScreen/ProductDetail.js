@@ -24,7 +24,8 @@ import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
 import Hr from "react-native-hr-component"
 import NumericInput from 'react-native-numeric-input'
-import { addProductToCart } from '../../redux/actions'
+import { addProductToCart, productExistOnCart } from '../../redux/actions'
+import { orderApi } from '../../api/orderApi'
 
 class ProductDetail extends Component {
     constructor(props) {
@@ -65,7 +66,7 @@ class ProductDetail extends Component {
 
  
     render() {
-        //console.log("Product Props", this.props)
+        console.log("Product Props", this.props)
         const { item } = this.props
         var selected_variant = {}
         var images = _.map(item.master.images, 'large_url')
@@ -113,9 +114,23 @@ class ProductDetail extends Component {
         }
 
         //Cantidad de items disponibles
+
+        //Validamos si el producto ya existe en el carro y restamos la cantidad de productos que ya se escogieron
+        let line_item = {
+            variant_id: selected_variant.id,
+            quantity: 0
+        }
+        let available_quantity = selected_variant.total_on_hand
+        console.log("available quantity 1", available_quantity)
+        const existe = orderApi.lineItemExists(line_item, this.props.state.cart.line_items)
+        console.log("existe", existe)
+        if ( existe !== undefined ){
+            available_quantity = available_quantity - existe.quantity
+        }
+
         let qty_picker
-        //console.log(selected_variant.total_on_hand)
-        if (selected_variant.total_on_hand === 0){
+        console.log("available quantity", available_quantity)
+        if (available_quantity === 0){
             qty_picker = 
                     <Text note style={{ color: 'red' }}>
                         No Disponible
@@ -130,7 +145,7 @@ class ProductDetail extends Component {
                     iconSize={25}
                     step={1}
                     minValue={1}
-                    maxValue={selected_variant.total_on_hand}
+                    maxValue={available_quantity}
                     //valueType='real'
                     rounded 
                     textColor='black' 
@@ -237,7 +252,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { addProductToCart })(ProductDetail);
+export default connect(mapStateToProps, { addProductToCart, productExistOnCart })(ProductDetail);
 
 const customStylesHere = {
     fontWeight: "bold",
