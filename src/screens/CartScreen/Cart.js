@@ -32,7 +32,7 @@ class ProductDetail extends PureComponent {
     // }
     
     componentWillMount(){
-        //this.props.getOrder();
+        this.props.getOrder()
     }
 
     // componentWillReceiveProps(){
@@ -84,6 +84,7 @@ class ProductDetail extends PureComponent {
         this.props.updateProductOnCart({item_id, line_item})
             .then (() => {
                 //alert("Producto Agregado!")
+                this.props.getOrder()
                 Toast.show({
                     text: "Carrito Actualizado!",
                     buttonText: "Ok",
@@ -162,7 +163,7 @@ class ProductDetail extends PureComponent {
 
     render(){
         let { cart, order } = this.props
-        //console.log("order", order)
+        console.log("order", order)
         console.log("data", cart)
         let showLoader = null
         if (cart.addingProductToCart) {
@@ -233,7 +234,7 @@ class ProductDetail extends PureComponent {
                         width: '100%'
                     }}
                 >
-                    <Text>Checkout</Text>
+                    <Text>Checkout {order.isFetching?"":order.order.display_item_total}</Text>
                 </Button>
             </Container>
         )
