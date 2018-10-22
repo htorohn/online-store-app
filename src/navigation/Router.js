@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scene, Router, Stack, Drawer, Overlay, Modal, Lightbox } from 'react-native-router-flux'
-import { StackViewStyleInterpolator } from 'react-navigation-stack';
+//import { StackViewStyleInterpolator } from 'react-navigation-stack';
 //import { Text, Badge } from 'native-base'
 import NavBar from './NavBar'
 import DrawerContent from './DrawerContent'
@@ -8,17 +8,17 @@ import DrawerContent from './DrawerContent'
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import ProductDetail from '../screens/HomeScreen/ProductDetail'
 import Cart from '../screens/CartScreen/Cart'
-import LinksScreen from '../screens/LinksScreen';
-import RightMenu from './RightMenu'
+//import LinksScreen from '../screens/LinksScreen';
+//import RightMenu from './RightMenu'
 //import SettingsScreen from '../screens/SettingsScreen';
 //import User from './components/User';
 
 //import BadgedTabBarIcon from '../components/BadgedTabBarIcon';
 
-const transitionConfig = () => ({
-    screenInterpolator:
-      StackViewStyleInterpolator.forFadeFromBottomAndroid,
-  });
+// const transitionConfig = () => ({
+//     screenInterpolator:
+//       StackViewStyleInterpolator.forFadeFromBottomAndroid,
+//   });
 
 const AppNavigator = () => {
     return (

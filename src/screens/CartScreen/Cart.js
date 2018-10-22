@@ -54,10 +54,11 @@ class ProductDetail extends PureComponent {
             'Esta seguro que desea eliminar el producto?',
             [
                 {text: 'Si', onPress: () => {
-                        console.log('Ok Pressed', item)
+                        //console.log('Ok Pressed', item)
                         this.props.removeProductFromCart(item)
                             .then (() => {
                                 //alert("Producto Agregado!")
+                                this.props.getOrder()
                                 Toast.show({
                                     text: "Carrito Actualizado!",
                                     buttonText: "Ok",
@@ -74,8 +75,8 @@ class ProductDetail extends PureComponent {
     }
 
     handleQtyChange(item, newQty) {
-        console.log("update item", item)
-        console.log("new qty", newQty)
+        //console.log("update item", item)
+        //console.log("new qty", newQty)
         let line_item = {
             variant_id: item.variant.id,
             quantity: newQty
@@ -96,7 +97,7 @@ class ProductDetail extends PureComponent {
 
     renderItem(item, key) {
         //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
-        console.log("item:",item)
+        //console.log("item:",item)
         const { variant } = item
         var variant_option = null
         if (!variant.is_master) {
@@ -130,7 +131,7 @@ class ProductDetail extends PureComponent {
                     )
                 }
             </Picker>
-        console.log(variant.images[0].small_url)
+        //console.log(variant.images[0].small_url)
         return (
             <TouchableWithoutFeedback key={key} onPress={() => this.handleClick({item})}>
                 {/* <Content style={{flex: 1}}> */}
@@ -163,8 +164,8 @@ class ProductDetail extends PureComponent {
 
     render(){
         let { cart, order } = this.props
-        console.log("order", order)
-        console.log("data", cart)
+        //console.log("order", order)
+        //console.log("data", cart)
         let showLoader = null
         if (cart.addingProductToCart) {
             showLoader = 
