@@ -66,7 +66,7 @@ class ProductDetail extends Component {
 
  
     render() {
-        console.log("Product Props", this.props)
+        //console.log("Product Props", this.props)
         const { item } = this.props
         var selected_variant = {}
         var images = _.map(item.master.images, 'large_url')
@@ -121,15 +121,15 @@ class ProductDetail extends Component {
             quantity: 0
         }
         let available_quantity = selected_variant.total_on_hand
-        console.log("available quantity 1", available_quantity)
+        //console.log("available quantity 1", available_quantity)
         const existe = orderApi.lineItemExists(line_item, this.props.state.cart.line_items)
-        console.log("existe", existe)
+        //console.log("existe", existe)
         if ( existe !== undefined ){
             available_quantity = available_quantity - existe.quantity
         }
 
         let qty_picker
-        console.log("available quantity", available_quantity)
+        //console.log("available quantity", available_quantity)
         if (available_quantity === 0){
             qty_picker = 
                     <Text note style={{ color: 'red' }}>

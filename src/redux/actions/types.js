@@ -18,5 +18,10 @@ export const ORDER_FETCHING = 'order_fetching'
 export const ORDER_FETCH_SUCCESS = 'order_fetch_success'
 export const ORDER_FETCH_FAILURE = 'order_fetch_failure'
 
+//Taxonomies
+export const TAXONOMIES_FETCH_SUCCESS = 'taxonomies_fetch_success'
+export const TAXONOMIES_FETCHING = 'taxonomies_fetching'
+export const TAXONOMIES_FETCH_ERROR = 'taxonomies_fetch_error'
+
 //Error
 export const DISPLAY_ERROR = 'display_error'
