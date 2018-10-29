@@ -1,17 +1,23 @@
 import React, { Component } from "react"
 import { connect } from 'react-redux'
-import { Image } from "react-native"
+import { Image, Text } from "react-native"
 import { Actions } from 'react-native-router-flux'
 import {
   Content,
-  Text,
+  //Text,
   List,
   ListItem,
   Icon,
   Container,
   Left,
   Right,
-  Badge
+  Body,
+  Badge,
+  Card,
+  CardItem,
+  Grid,
+  Col,
+  Button
 } from "native-base"
 import styles from "./style"
 import { taxonomiesFetch } from '../../redux/actions'
@@ -43,6 +49,42 @@ class SideBar extends Component {
   render() {
     const { taxonomies } = this.props
     console.log("taxonomies", taxonomies)
+
+    //Render Login menu
+    //If not logged in show buttons
+    let loginMenu = null
+    if (2==1) {
+
+    } else {
+      loginMenu = 
+        <Container style={styles.drawerContainer}>
+            <Grid style={{alignItems: 'center'}}>
+              <Col>
+                <Icon name='person' style={{fontSize: 80, color: 'white'}}/>
+                </Col>
+                <Col>
+                  <Grid style={{alignItems: 'center'}}>
+                  <Col >
+                    <Text style={{color: 'white'}}>Hola. </Text>
+                  </Col>
+                  <Col >
+                    <Button
+                      //style={{flex: 1}}
+                      transparent 
+                      title="Go to Login" 
+                      onPress={() => Actions.login({ data: 'Custom data', title: 'Custom title' })}
+                    >
+                      <Text style={{color: 'white'}}>Login</Text>
+                    </Button>
+                  </Col>
+                  </Grid>
+                </Col>
+              
+              </Grid>  
+        </Container>
+    }
+
+
     return (
       <Container>
         <Content
@@ -50,7 +92,8 @@ class SideBar extends Component {
           style={{ flex: 1, backgroundColor: "#fff", top: -1 }}
         >
           <Image source={drawerCover} style={styles.drawerCover} />
-          <Image square style={styles.drawerImage} source={drawerImage} />
+          {loginMenu}
+          {/* <Image square style={styles.drawerImage} source={drawerImage} /> */}
 
           <List
             dataArray={datas}

@@ -20,6 +20,18 @@ export default {
     height: 75,
     resizeMode: "cover"
   },
+  drawerContainer: {
+    position: "absolute",
+    left: Platform.OS === "android" ? deviceWidth / 10 : deviceWidth / 9,
+    top: Platform.OS === "android" ? deviceHeight / 13 : deviceHeight / 12,
+    width: 210,
+    height: 75,
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    //resizeMode: "cover"
+    backgroundColor: "transparent"
+  },
   text: {
     fontWeight: Platform.OS === "ios" ? "500" : "400",
     fontSize: 16,
