@@ -9,7 +9,7 @@ const persistDataLocally = (store) => (next) => async (action) => {
         "cart": store.getState().cart,
         "order": store.getState().order
     }
-    //console.log("cart", store.getState().cart)
+    console.log("form", store.getState().form)
     storage.setItemAsync('ecommerceState', JSON.stringify(data))
         .then(() => {
             console.log("El estado fue guardado")
