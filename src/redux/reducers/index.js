@@ -3,6 +3,7 @@ import ProductsReducer from './ProductsReducer'
 import CartReducer from './CartReducer'
 import OrderReducer from './OrderReducer'
 import TaxonomiesReducer from './TaxonomiesReducer'
+import UserReducer from './UserReducer'
 import { reducer as formReducer } from 'redux-form'
 
 export default combineReducers({
@@ -10,6 +11,6 @@ export default combineReducers({
     cart: CartReducer,
     order: OrderReducer,
     taxonomies:  TaxonomiesReducer,
-    user: {token:null},
+    user: UserReducer,
     form: formReducer
 });

@@ -15,6 +15,8 @@ import {
     Button
 } from 'native-base'
 
+import { login } from '../../redux/actions'
+
 const validate = values => {
     //console.log("validating values", values)
     const error= {}
@@ -61,11 +63,25 @@ const renderInput = ({ input, addons, icon, type, meta: { touched, error, warnin
 
 class Login extends React.Component {
 
+    constructor(props) {
+        super(props)
+        this.submitForm = this.submitForm.bind(this)
+    }
+    
     submitForm(values){
         console.log("submitting values", values)
+        console.log("props", this.props)
+        if (values.email === undefined){
+            return null
+        }
+        this.props.login(values)
+            .then(() => {
+                console.log("se hizo login")
+            })
     }
     
     render(){
+        console.log("user", this.props.user)
         const { handleSubmit } = this.props
         return (
             <Container style={{ alignContent: 'center', flex: 1, padding: 20 }}>
@@ -94,7 +110,14 @@ class Login extends React.Component {
     }
 }
 
-export default connect(null, null)(reduxForm({
+const mapStateToProps = state => {
+    const { user } = state
+    return { user }
+}
+
+Login = connect (mapStateToProps, { login })(Login)
+
+export default reduxForm({
     form: 'Login',
     validate
-  })(Login))
+  })(Login)

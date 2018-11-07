@@ -18,10 +18,10 @@ import {
     Spinner
 } from 'native-base'
 //import NumericInput from 'react-native-numeric-input'
-import { getOrder } from '../../redux/actions'
+//import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux';
-import { updateProductOnCart, removeProductFromCart } from '../../redux/actions'
-import OrderReducer from '../../redux/reducers/OrderReducer';
+import { getOrder, updateProductOnCart, removeProductFromCart } from '../../redux/actions'
+//import OrderReducer from '../../redux/reducers/OrderReducer';
 
 class ProductDetail extends PureComponent {
     //state = {selected: (new Map(): Map<string, boolean>)};
