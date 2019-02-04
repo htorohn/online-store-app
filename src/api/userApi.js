@@ -18,12 +18,13 @@ export const userApi = {
                 return response
             })
             .catch((error) => {
-                console.log("error", Object.keys(error), error.response, error)
-                return { error }
+                //console.log("error", Object.keys(error), error.response, error)
+                
+                return error.response
             })
     },
 
-    signup: ({params}) => {
+    register: ({params}) => {
 
     }
 }

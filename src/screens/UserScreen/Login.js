@@ -7,15 +7,19 @@ import { Field,reduxForm } from 'redux-form'
 import {
     Container,
     Content,
+    Grid,
+    Col,
     Form,
     Item,
     Label,
     Input,
     Icon,
-    Button
+    Button,
+    Spinner
 } from 'native-base'
 
 import { login } from '../../redux/actions'
+//import UserReducer from '../../redux/reducers/UserReducer';
 
 const validate = values => {
     //console.log("validating values", values)
@@ -69,28 +73,31 @@ class Login extends React.Component {
     }
     
     submitForm(values){
-        console.log("submitting values", values)
-        console.log("props", this.props)
+        //console.log("submitting values", values)
+        //console.log("props", this.props)
         if (values.email === undefined){
             return null
         }
         this.props.login(values)
-            .then(() => {
-                console.log("se hizo login")
+            .then((response) => {
+                console.log("se hizo login", response)
+                if (response){
+                    Actions.pop()
+                }
             })
     }
     
     render(){
         console.log("user", this.props.user)
-        const { handleSubmit } = this.props
+        const { handleSubmit, user } = this.props
         return (
             <Container style={{ alignContent: 'center', flex: 1, padding: 20 }}>
-                <Content padder>
+                <Content padder style={{ alignContent: 'center'}}>
                     <Icon ios='ios-cart-outline' android="md-cart" style={{fontSize: 200, alignSelf: 'center'}} />
                     {/* <Form onSubmit={handleSubmit}> */}
                     <Field 
                         name="email" 
-                        addons={{placeholder:'email', keyboardType: 'email-address'}} 
+                        addons={{placeholder:'email', keyboardType: 'email-address', textContentType: 'emailAddress'}} 
                         icon={{active: true, name: 'person'}}
                         component={renderInput} 
                     />
@@ -101,9 +108,33 @@ class Login extends React.Component {
                         component={renderInput} 
                     />
                     <Button block primary rounded onPress={handleSubmit(this.submitForm)} style={{marginTop: 10}}>
-                        <Text style={{color: 'white'}}>Login</Text>
+                            {user.login_user?<Spinner color='white'/>:<Text style={{color: 'white'}}>Login</Text>}
                     </Button>
                     {/* </Form> */}
+                    {
+                        user.error !== null?<Text style={{color: 'red'}}>Email o Password incorrecto</Text>:null
+                    }
+                    <Grid style={{alignItems: 'center'}}>
+                        <Col >
+                            <Text>¿Aún no eres usuario? </Text>
+                        </Col>
+                        <Col >
+                            {
+                            user.isLoggedIn 
+                            ? 
+                                <Text>{user.email.substr(0, user.email.indexOf('@'))}</Text>
+                            :
+                                <Button
+                                //style={{flex: 1}}
+                                transparent 
+                                title="Go to Login" 
+                                onPress={() => Actions.register({ data: 'Custom data', title: 'Custom title' })}
+                                >
+                                <Text style={{color: 'blue'}}>Regístrate</Text>
+                                </Button>
+                            }
+                        </Col>
+                    </Grid>
                 </Content>
             </Container>
         )

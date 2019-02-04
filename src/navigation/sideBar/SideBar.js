@@ -47,15 +47,15 @@ class SideBar extends Component {
   }
 
   render() {
-    const { taxonomies } = this.props
+    const { taxonomies, user } = this.props
     console.log("taxonomies", taxonomies)
 
     //Render Login menu
     //If not logged in show buttons
     let loginMenu = null
-    if (2==1) {
+    // if (user.isLoggedIn) {
 
-    } else {
+    // } else {
       loginMenu = 
         <Container style={styles.drawerContainer}>
             <Grid style={{alignItems: 'center'}}>
@@ -68,21 +68,27 @@ class SideBar extends Component {
                     <Text style={{color: 'white'}}>Hola. </Text>
                   </Col>
                   <Col >
-                    <Button
-                      //style={{flex: 1}}
-                      transparent 
-                      title="Go to Login" 
-                      onPress={() => Actions.login({ data: 'Custom data', title: 'Custom title' })}
-                    >
-                      <Text style={{color: 'white'}}>Login</Text>
-                    </Button>
+                    {
+                      user.isLoggedIn 
+                      ? 
+                        <Text style={{color: 'white'}}>{user.email.substr(0, user.email.indexOf('@'))}</Text>
+                      :
+                        <Button
+                          //style={{flex: 1}}
+                          transparent 
+                          title="Go to Login" 
+                          onPress={() => Actions.login({ data: 'Custom data', title: 'Custom title' })}
+                        >
+                          <Text style={{color: 'white'}}>Login</Text>
+                        </Button>
+                    }
                   </Col>
                   </Grid>
                 </Col>
               
               </Grid>  
         </Container>
-    }
+    //}
 
 
     return (
@@ -137,8 +143,8 @@ class SideBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { taxonomies } = state
-  return { taxonomies }
+  const { taxonomies, user } = state
+  return { taxonomies, user }
 }
 
 export default connect(mapStateToProps, { taxonomiesFetch })(SideBar)
