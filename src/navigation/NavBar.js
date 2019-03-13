@@ -84,11 +84,12 @@ class NavBar extends React.Component {
         <Button transparent onPress={() => Actions.Cart()}>
             <BadgedTabBarIcon
                 focused={true}
-                name={
-                    Platform.OS === 'ios' 
-                        ? 'ios-cart-outline' //${focused ? '' : '-outline'}` 
-                        : 'md-cart'
-                }
+                name='cart'
+                // name={
+                //     Platform.OS === 'ios' 
+                //         ? 'ios-cart-outline' //${focused ? '' : '-outline'}` 
+                //         : 'md-cart'
+                // }
                 itemCount={this.props.itemCount}
 
             />

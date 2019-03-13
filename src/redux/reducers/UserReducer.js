@@ -1,7 +1,12 @@
 import {
     LOGIN_USER,
-    LOGIN_ERROR,
-    LOGIN_SUCCESS
+    //LOGIN_ERROR,
+    LOGIN_SUCCESS,
+    REGISTER_USER,
+    REGISTER_SUCCESS,
+    USER_ACTION,
+    USER_SUCCESS,
+    USER_ERROR
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -12,21 +17,43 @@ const INITIAL_STATE = {
     ship_address: null,
     error: null,
     isLoggedIn: false,
-    login_user: false
+    loading_user: false
 }
 
 export default (state = INITIAL_STATE, action) => {
     //console.log("payload", action.payload)
+    let user
     switch (action.type) {
-        case LOGIN_USER:
+        case USER_ACTION:
             return {
                 ...state,
-                login_user: true,
+                loading_user: true,
                 error: null
             }
 
-        case LOGIN_SUCCESS:
-            const user = action.payload
+        // case LOGIN_SUCCESS:
+        //     user = action.payload
+        //     return {
+        //         ...state,
+        //         id: user.id,
+        //         email: user.email,
+        //         spree_api_key: user.spree_api_key,
+        //         bill_address: user.bill_address,
+        //         ship_address: user.ship_address,
+        //         error: null,
+        //         isLoggedIn: true,
+        //         login_user: false
+        //     }
+
+        // case REGISTER_USER:
+        //     return {
+        //         ...state,
+        //         login_user: true,
+        //         error: null
+        //     }
+
+        case USER_SUCCESS:
+            user = action.payload
             return {
                 ...state,
                 id: user.id,
@@ -36,13 +63,13 @@ export default (state = INITIAL_STATE, action) => {
                 ship_address: user.ship_address,
                 error: null,
                 isLoggedIn: true,
-                login_user: false
+                loading_user: false
             }
-        case LOGIN_ERROR:
+        case USER_ERROR:
             return {
                 ...state,
                 error: action.payload,
-                login_user: false
+                loading_user: false
             }
 
         default:

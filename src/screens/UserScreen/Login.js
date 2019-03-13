@@ -1,68 +1,39 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Text } from 'react-native'
-import Expo from 'expo'
 import { Actions } from 'react-native-router-flux'
+
 import { Field,reduxForm } from 'redux-form'
 import {
     Container,
     Content,
     Grid,
     Col,
-    Form,
-    Item,
-    Label,
-    Input,
     Icon,
     Button,
     Spinner
 } from 'native-base'
-
+import {renderTextField, renderPasswordField} from '../../components/RenderTextField'
 import { login } from '../../redux/actions'
-//import UserReducer from '../../redux/reducers/UserReducer';
 
 const validate = values => {
-    //console.log("validating values", values)
-    const error= {}
-    error.email= ''
-    error.password= ''
-    var ema = values.email
-    var pw = values.password
-    if(values.email === undefined){
-      ema = ''
+    const errors = {}
+    const requiredFields = [
+      'email',
+      'password'
+    ]
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Required'
+      }
+    })
+    if (
+      values.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address'
     }
-    if(values.password === undefined){
-      pw = ''
-    }
-    if(ema.length < 8 && ema !== ''){
-      error.email= 'too short'
-    }
-    if(!ema.includes('@') && ema !== ''){
-      error.email= '@ not included'
-    }
-    if(pw.length > 8){
-      error.name= 'max 8 characters'
-    }
-    return error
-}
-
-// const submitForm = values => {
-//     console.log("Submitting form", values)
-// }
-
-const renderInput = ({ input, addons, icon, type, meta: { touched, error, warning } }) => {
-    //console.log('input', input)
-    var hasError= false
-    if(error !== undefined){
-      hasError= true
-    }
-    return( 
-      <Item rounded error={hasError} style={{marginTop: 10}}>
-        <Icon {...icon} />
-        <Input {...input} {...addons}/>
-        {hasError ? <Text>{error}</Text> : <Text />}
-      </Item>
-    )
+    return errors
 }
 
 class Login extends React.Component {
@@ -73,8 +44,6 @@ class Login extends React.Component {
     }
     
     submitForm(values){
-        //console.log("submitting values", values)
-        //console.log("props", this.props)
         if (values.email === undefined){
             return null
         }
@@ -93,24 +62,23 @@ class Login extends React.Component {
         return (
             <Container style={{ alignContent: 'center', flex: 1, padding: 20 }}>
                 <Content padder style={{ alignContent: 'center'}}>
-                    <Icon ios='ios-cart-outline' android="md-cart" style={{fontSize: 200, alignSelf: 'center'}} />
-                    {/* <Form onSubmit={handleSubmit}> */}
+                    <Icon name='cart' style={{fontSize: 200, alignSelf: 'center'}} />
                     <Field 
-                        name="email" 
-                        addons={{placeholder:'email', keyboardType: 'email-address', textContentType: 'emailAddress'}} 
-                        icon={{active: true, name: 'person'}}
-                        component={renderInput} 
+                        name="email"
+                        keyboardType = 'email-address'
+                        label = 'email'
+                        textContentType = 'emailAddress'
+                        component = {renderTextField} 
+                        
                     />
                     <Field 
                         name="password" 
-                        addons={{placeholder: 'password', secureTextEntry: true}} 
-                        icon={{active: true, name: 'lock'}}
-                        component={renderInput} 
+                        component={renderPasswordField} 
+                        
                     />
                     <Button block primary rounded onPress={handleSubmit(this.submitForm)} style={{marginTop: 10}}>
-                            {user.login_user?<Spinner color='white'/>:<Text style={{color: 'white'}}>Login</Text>}
+                            {user.loading_user?<Spinner color='white'/>:<Text style={{color: 'white'}}>Login</Text>}
                     </Button>
-                    {/* </Form> */}
                     {
                         user.error !== null?<Text style={{color: 'red'}}>Email o Password incorrecto</Text>:null
                     }
@@ -122,10 +90,9 @@ class Login extends React.Component {
                             {
                             user.isLoggedIn 
                             ? 
-                                <Text>{user.email.substr(0, user.email.indexOf('@'))}</Text>
+                                Actions.pop()
                             :
                                 <Button
-                                //style={{flex: 1}}
                                 transparent 
                                 title="Go to Login" 
                                 onPress={() => Actions.register({ data: 'Custom data', title: 'Custom title' })}

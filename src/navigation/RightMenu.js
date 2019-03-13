@@ -8,16 +8,17 @@ import BadgedTabBarIcon from '../components/BadgedTabBarIcon'
 class RightMenu extends React.Component {
     
     render(){
-        console.log("estoy aqui")
+        //console.log("estoy aqui")
         return (
             <Button>
                 <BadgedTabBarIcon
                     focused={true}
-                    name={
-                        Platform.OS === 'ios' 
-                            ? 'ios-cart-outline' //${focused ? '' : '-outline'}` 
-                            : 'md-cart'
-                    }
+                    name='cart'
+                    // name={
+                    //     Platform.OS === 'ios' 
+                    //         ? 'ios-cart-outline' //${focused ? '' : '-outline'}` 
+                    //         : 'md-cart'
+                    // }
                     itemCount={this.props.itemCount}
 
                 />

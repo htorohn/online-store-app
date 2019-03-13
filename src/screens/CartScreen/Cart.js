@@ -19,7 +19,7 @@ import {
 } from 'native-base'
 //import NumericInput from 'react-native-numeric-input'
 //import { getOrder } from '../../redux/actions'
-import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux'
 import { getOrder, updateProductOnCart, removeProductFromCart } from '../../redux/actions'
 //import OrderReducer from '../../redux/reducers/OrderReducer';
 
@@ -114,7 +114,7 @@ class ProductDetail extends PureComponent {
         qtyPicker = 
             <Picker
                 mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down-outline" />}
+                iosIcon={<Icon name="arrow-down" />}
                 //placeholderStyle={{ color: "#bfc6ea" }}
                 //placeholderIconColor="#007aff"
                 style={{ width: 120 }}
@@ -153,7 +153,7 @@ class ProductDetail extends PureComponent {
                             danger 
                             onPress={()=>{this.handleRemoveClick(item)}}
                         >
-                            <Icon ios='ios-trash-outline' android='md-trash' />
+                            <Icon name='trash' />
                         </Button>
                     </Right>
                 </ListItem>
@@ -187,7 +187,7 @@ class ProductDetail extends PureComponent {
             return(
                 <Container>
                     <Content contentContainerStyle={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
-                        <Icon ios='ios-cart-outline' android="md-cart" style={{fontSize: 200}} />
+                        <Icon name='cart' style={{fontSize: 200}} />
                         <Text style={{fontSize: 20}}>Oh no! El carrito esta vacio</Text>
                         <Button
                             transparent

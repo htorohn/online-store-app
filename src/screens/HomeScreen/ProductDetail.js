@@ -92,7 +92,7 @@ class ProductDetail extends Component {
                     <Left>    
                         <Picker
                             mode="dropdown"
-                            iosIcon={<Icon name="ios-arrow-down-outline" />}
+                            iosIcon={<Icon name="arrow-down" />}
                             placeholderStyle={{ color: "#bfc6ea" }}
                             placeholderIconColor="#007aff"
                             style={{ width: undefined }}

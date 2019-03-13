@@ -33,7 +33,7 @@ export const orderApi = {
                 })
                 .set('Content-Type', 'application/json')
                 .then((response) => {
-                    console.log("add line item", response.body)
+                    //console.log("add line item", response.body)
                     //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                     return response.body
                 })
@@ -60,7 +60,7 @@ export const orderApi = {
                 })
                 .set('Content-Type', 'application/json')
                 .then((response) => {
-                    console.log("update line item", response.body)
+                    //console.log("update line item", response.body)
                     //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                     return response.body
                 })
@@ -74,7 +74,7 @@ export const orderApi = {
     removeLineItem: (params) => {
         var request = require('superagent')
             //const tokenParam = { order_token: params.order_token }
-            console.log("voy a borrar el item", params)
+            //console.log("voy a borrar el item", params)
             const {order_number, order_token, item_id} = params
             return request
                 .delete(`${MAIN_URL}/api/v1/orders/${order_number}/line_items/${item_id}`)
@@ -88,7 +88,7 @@ export const orderApi = {
                 })
                 .set('Content-Type', 'application/json')
                 .then((response) => {
-                    console.log("delete line item", response.body)
+                    //console.log("delete line item", response.body)
                     //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                     return response.body
                 })

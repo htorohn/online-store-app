@@ -144,7 +144,7 @@ export const removeProductFromCart = (product) => {
         const item_id = product.id
         return orderApi.removeLineItem({order_number, order_token, item_id})
             .then((response) => {
-                console.log("response", response)
+                //console.log("response", response)
                 if(response === null){
                     
                     dispatch({ type: REMOVE_PRODUCT_FROM_CART, payload: item_id });

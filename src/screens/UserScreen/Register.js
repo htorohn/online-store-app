@@ -2,56 +2,38 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import { Field,reduxForm } from 'redux-form'
+import { Text } from 'react-native'
 import {
     Container,
-    Text
+    Content,
+    Grid,
+    Col,
+    Icon,
+    Button,
+    Spinner
 } from 'native-base'
-
+import {renderTextField, renderPasswordField} from '../../components/RenderTextField'
 import { register } from '../../redux/actions'
 
 const validate = values => {
-    //console.log("validating values", values)
-    const error= {}
-    error.email= ''
-    error.password= ''
-    var ema = values.email
-    var pw = values.password
-    if(values.email === undefined){
-      ema = ''
+    const errors = {}
+    const requiredFields = [
+      'email',
+      'password'
+    ]
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Required'
+      }
+    })
+    if (
+      values.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address'
     }
-    if(values.password === undefined){
-      pw = ''
-    }
-    if(ema.length < 8 && ema !== ''){
-      error.email= 'too short'
-    }
-    if(!ema.includes('@') && ema !== ''){
-      error.email= '@ not included'
-    }
-    if(pw.length > 8){
-      error.name= 'max 8 characters'
-    }
-    return error
-}
-
-// const submitForm = values => {
-//     console.log("Submitting form", values)
-// }
-
-const renderInput = ({ input, addons, icon, type, meta: { touched, error, warning } }) => {
-    //console.log('input', input)
-    var hasError= false
-    if(error !== undefined){
-      hasError= true
-    }
-    return( 
-      <Item rounded error={hasError} style={{marginTop: 10}}>
-        <Icon {...icon} />
-        <Input {...input} {...addons}/>
-        {hasError ? <Text>{error}</Text> : <Text />}
-      </Item>
-    )
-}
+    return errors
+  }
 
 class Register extends React.Component {
 
@@ -66,9 +48,16 @@ class Register extends React.Component {
         if (values.email === undefined){
             return null
         }
-        this.props.login(values)
+        if (values.password === undefined){
+            return null
+        }
+        values['password_confirmation'] = values.password
+
+        //console.log("agregue confirmation", values)
+
+        this.props.register(values)
             .then((response) => {
-                console.log("se hizo login", response)
+                console.log("Se registró el usuario", response)
                 if (response){
                     Actions.pop()
                 }
@@ -76,49 +65,47 @@ class Register extends React.Component {
     }
     
     render(){
-        console.log("user", this.props.user)
+        //console.log("user", this.props.user)
         const { handleSubmit, user } = this.props
         return (
             <Container style={{ alignContent: 'center', flex: 1, padding: 20 }}>
                 <Content padder style={{ alignContent: 'center'}}>
-                    <Icon ios='ios-cart-outline' android="md-cart" style={{fontSize: 200, alignSelf: 'center'}} />
-                    {/* <Form onSubmit={handleSubmit}> */}
+                    <Icon name='cart' style={{fontSize: 200, alignSelf: 'center'}} />
                     <Field 
                         name="email" 
-                        addons={{placeholder:'email', keyboardType: 'email-address', textContentType: 'emailAddress'}} 
-                        icon={{active: true, name: 'person'}}
-                        component={renderInput} 
+                        keyboardType = 'email-address'
+                        label = 'email'
+                        textContentType = 'emailAddress'
+                        component = {renderTextField} 
+                        
                     />
                     <Field 
                         name="password" 
-                        addons={{placeholder: 'password', secureTextEntry: true}} 
-                        icon={{active: true, name: 'lock'}}
-                        component={renderInput} 
+                        component={renderPasswordField} 
+                        
                     />
                     <Button block primary rounded onPress={handleSubmit(this.submitForm)} style={{marginTop: 10}}>
-                            {user.login_user?<Spinner color='white'/>:<Text style={{color: 'white'}}>Login</Text>}
+                            {user.loading_user?<Spinner color='white'/>:<Text style={{color: 'white'}}>Register</Text>}
                     </Button>
-                    {/* </Form> */}
                     {
-                        user.error !== null?<Text style={{color: 'red'}}>Email o Password incorrecto</Text>:null
+                        user.error !== null?<Text style={{color: 'red'}}>Error al registrar usuario</Text>:null
                     }
                     <Grid style={{alignItems: 'center'}}>
                         <Col >
-                            <Text>¿Aún no eres usuario? </Text>
+                            <Text>¿Ya eres usuario? </Text>
                         </Col>
                         <Col >
                             {
                             user.isLoggedIn 
                             ? 
-                                <Text>{user.email.substr(0, user.email.indexOf('@'))}</Text>
+                                Actions.pop()
                             :
                                 <Button
-                                //style={{flex: 1}}
                                 transparent 
                                 title="Go to Login" 
-                                onPress={() => Actions.register({ data: 'Custom data', title: 'Custom title' })}
+                                onPress={() => Actions.login({ data: 'Custom data', title: 'Custom title' })}
                                 >
-                                <Text style={{color: 'blue'}}>Regístrate</Text>
+                                <Text style={{color: 'blue'}}>Login</Text>
                                 </Button>
                             }
                         </Col>

@@ -3,7 +3,7 @@ import { Platform, StatusBar } from 'react-native'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
-import { AppLoading, Asset, Font, Icon, SecureStore } from 'expo'
+import { AppLoading, Font, SecureStore } from 'expo'
 import { Root } from 'native-base'
 import reducers from './src/redux/reducers'
 //import AppNavigator from './navigation/AppNavigator';
@@ -62,7 +62,7 @@ export default class App extends React.Component {
         .then((ecommerceState) => {
           //console.log("ecommerce", ecommerceState)
           if (ecommerceState !== null){
-            //this.setState({initial_state: JSON.parse(ecommerceState)})
+            this.setState({initial_state: JSON.parse(ecommerceState)})
           }
         })
         .catch((error) => {

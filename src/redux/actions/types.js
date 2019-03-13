@@ -27,6 +27,10 @@ export const TAXONOMIES_FETCH_ERROR = 'taxonomies_fetch_error'
 export const DISPLAY_ERROR = 'display_error'
 
 //User
-export const LOGIN_USER = 'login_user'
-export const LOGIN_ERROR = 'login_error'
-export const LOGIN_SUCCESS = 'login_success'
+// export const LOGIN_USER = 'login_user'
+export const USER_ACTION = 'user_action'
+export const USER_SUCCESS = 'user_success'
+export const USER_ERROR = 'login_error'
+// export const LOGIN_SUCCESS = 'login_success'
+// export const REGISTER_USER = 'login_user'
+// export const REGISTER_SUCCESS = 'login_success'

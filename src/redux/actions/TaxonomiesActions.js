@@ -5,12 +5,20 @@ import {
 } from './types';
 import { MAIN_URL } from '../../constants/Config';
 
+// import { makeClient } from '@spree/storefront-api-v2-sdk'
+
+
+// const client = makeClient({
+//   host: MAIN_URL
+// })
+
 export const taxonomiesFetch = () => {
     return (dispatch) => {
         dispatch({ type: TAXONOMIES_FETCHING });
         var request = require('superagent')
         request
-            .get(`${MAIN_URL}/api/v2/storefront/taxons?include=image`)
+            .get(`${MAIN_URL}/api/v2/storefront/taxons`)
+            .query( { include: "image" } )
             .set('Content-Type', 'application/json')
             .set('Access-Control-Allow-origin', '*')
             .then ((response) => {
@@ -23,3 +31,19 @@ export const taxonomiesFetch = () => {
             })
     };
 }
+
+// export const taxonomiesFetch = () => {
+//     return (dispatch) => {
+//         dispatch({ type: TAXONOMIES_FETCHING })
+//         try {
+//             const taxons = client.taxons.list({
+//                 include: 'image'
+//                 //page: 1
+//               })
+
+//             console.log("taxons", taxons)
+//         } catch (error) {
+//             console.error(error)
+//         }
+//     }
+// }
