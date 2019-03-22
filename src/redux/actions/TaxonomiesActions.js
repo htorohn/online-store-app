@@ -32,18 +32,8 @@ export const taxonomiesFetch = () => {
     };
 }
 
-// export const taxonomiesFetch = () => {
+// export const getTaxonomiesProduct = (taxonID) => {
 //     return (dispatch) => {
-//         dispatch({ type: TAXONOMIES_FETCHING })
-//         try {
-//             const taxons = client.taxons.list({
-//                 include: 'image'
-//                 //page: 1
-//               })
 
-//             console.log("taxons", taxons)
-//         } catch (error) {
-//             console.error(error)
-//         }
 //     }
 // }

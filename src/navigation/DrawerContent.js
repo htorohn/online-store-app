@@ -5,6 +5,7 @@ class DrawerContent extends React.Component {
   render() {
     return (
       <SideBar navigator={this.navigator}/>
+      //null
     )
   }
 }

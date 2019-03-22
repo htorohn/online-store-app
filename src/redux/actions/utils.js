@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const Utils = {
     tokenForAPI: (userToken, orderToken) => {
       let tokenParam = {};
@@ -20,10 +22,24 @@ const Utils = {
             }
         };
         return params;
+    },
+
+    getProductArray: (products) => {
+      console.log("productos en utils",products)
+      return _.map(products.data, (product) => {
+        return {
+          id: product.id,
+          name: product.attributes.name,
+          display_price: product.attributes.display_price,
+          image: product.relationships.images.data === null 
+            ? null 
+            : products.included.find((image) => image.id === product.relationships.images.data[0].id)
+        }
+      })
     }
     
   }
   
-  const {tokenForAPI, newOrderParams} = Utils.tokenForAPI;
+  const {tokenForAPI, newOrderParams, getProductArray} = Utils
   
-  export { tokenForAPI, newOrderParams };
+  export { tokenForAPI, newOrderParams, getProductArray };

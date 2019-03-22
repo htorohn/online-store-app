@@ -113,6 +113,15 @@ class NavBar extends React.Component {
               </Right>  
           </Header>
     );
+
+    // return (
+    //   <NavigationBar
+    //     hasHistory
+    //     leftComponent = {this._renderLeft(this.props.index)}
+    //     centerComponent = {this._renderMiddle()}
+    //     rightComponent = {this._renderRight()}
+    //   />
+    // )
   }
 }
 

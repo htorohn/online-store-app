@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, TouchableWithoutFeedback, Text } from 'react-native'
+import { FlatList, TouchableWithoutFeedback, Image } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 import {
     Container,
     Card,
+    Content,
+    Spinner,
     CardItem,
-    Image,
+    Text,
     Left
 } from 'native-base'
+import ImageOverlay from "react-native-image-overlay"
+
 
 import { taxonomiesFetch } from '../../redux/actions'
+import { MAIN_URL } from '../../constants/Config'
 
 class TaxonList extends Component {
 
@@ -20,34 +26,25 @@ class TaxonList extends Component {
     _keyExtractor = (item) => item.id.toString()
 
     renderItem(item) {
-        console.log ("item", item)
-        console.log ("existen?", this.props.taxonomies)
+        //console.log ("item", item)
+        //console.log ("existen?", this.props.taxonomies)
         
         if (item.relationships.image.data === null) return null
 
+        const { taxonomies } = this.props.taxonomies
+        //obtenemos la imagen del taxon
+        const current_image = taxonomies.included.find((image) => image.id === item.relationships.image.data.id)
+
         return (
-            <TouchableWithoutFeedback> 
-            {/* onPress={() => Actions.ProductDetail({item})}> */}
-
+            <TouchableWithoutFeedback onPress={() => Actions.ProductsList({item, current_image})}>
+                        
                 <Card style={{flex: 1}}>
-                    {/* <CardItem cardBody>
-                        <Image 
-                            source={{ uri: `${item.master.images[0].product_url}` }}
-                            style={{ height: 200, width: null, flex: 1 }}
-                        />
-                    </CardItem> */}
-                    <CardItem>
-                        <Left>
-                            <Text numberOfLines={1}>{item.attributes.name}</Text>
-                        </Left>
-                    </CardItem>
-                    {/* <CardItem>
-                        <Left>
-                            <Text>{item.master.display_price}</Text>
-                        </Left>
-                    </CardItem> */}
+                    <ImageOverlay 
+                        source={ { uri: MAIN_URL + current_image.attributes.styles[3].url }}
+                        title={item.attributes.name}
+                        titleStyle={{ fontSize: 50, fontWeight: 'bold' }}
+                    />
                 </Card>
-
             </TouchableWithoutFeedback>
         )
     }
@@ -55,6 +52,16 @@ class TaxonList extends Component {
     render(){
         console.log("taxonomies", this.props.taxonomies)
         const { taxonomies } = this.props.taxonomies
+        if (this.props.taxonomies.isFetching){
+            return (
+                <Container>
+                    <Content contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
+                        <Spinner color='black' />
+                    </Content>
+                </Container>
+            );
+        }
+        
         return (
             <Container>
             <FlatList 
@@ -62,7 +69,7 @@ class TaxonList extends Component {
                 style={{ flex: 1 }}
                 renderItem={({ item }) => this.renderItem(item)}
                 keyExtractor={this._keyExtractor}
-                numColumns={2}
+                numColumns={1}
 
             />
             </Container>

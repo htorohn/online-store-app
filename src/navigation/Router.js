@@ -7,6 +7,7 @@ import DrawerContent from './DrawerContent'
 
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import TaxonList from '../screens/HomeScreen/TaxonList'
+import Home from '../screens/HomeScreen/Home'
 import ProductDetail from '../screens/HomeScreen/ProductDetail'
 import Cart from '../screens/CartScreen/Cart'
 import Login from '../screens/UserScreen/Login'
@@ -28,12 +29,17 @@ const AppNavigator = () => {
                 >
                     <Stack key="root" >
                     <Scene
-                        key="ProductsList"
+                        key="TaxonList"
                         component={TaxonList}
                         title="My Shop"
                         navBar={NavBar}
                         
                         //iconName='home'
+                    />
+                    <Scene
+                        key="ProductsList"
+                        component={ProductsList}
+                        navBar={NavBar}
                     />
                     <Scene
                         key="ProductDetail"
