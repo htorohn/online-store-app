@@ -1,7 +1,10 @@
 import {
     PRODUCTS_FETCH_SUCCESS,
     PRODUCTS_FETCH_ERROR,
-    PRODUCTS_FETCHING
+    PRODUCTS_FETCHING,
+    PRODUCT_DETAIL_FETCH_SUCCESS,
+    PRODUCT_DETAIL_FETCH_ERROR,
+    PRODUCT_DETAIL_FETCHING
 } from './types'
 //import { makeClient } from '@spree/storefront-api-v2-sdk'
 import { MAIN_URL } from '../../constants/Config'
@@ -20,6 +23,26 @@ export const productsFetch = () => {
             .catch ((error) => {
                 console.log(error);
                 dispatch({ type: PRODUCTS_FETCH_ERROR, payload: error})
+            })
+    }
+}
+
+export const productDetailFetch = (product) => {
+    return (dispatch) => {
+        dispatch({ type: PRODUCT_DETAIL_FETCHING })
+        var request = require('superagent')
+        request
+            .get(`${MAIN_URL}/api/v2/products/${product}`)
+            .query( { include: "default_variant,variants,option_types,product_properties,taxons,images" })
+            .set('Content-Type', 'application/json')
+            //.set('Access-Control-Allow-origin', '*')
+            .then ((response) => {
+                console.log('product_action', response.body)
+                dispatch({ type: PRODUCT_DETAIL_FETCH_SUCCESS, payload: response.body })
+            })
+            .catch ((error) => {
+                console.log(error);
+                dispatch({ type: PRODUCT_DETAIL_FETCH_ERROR, payload: error})
             })
     }
 }

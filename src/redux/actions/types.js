@@ -3,6 +3,11 @@ export const PRODUCTS_FETCH_SUCCESS = 'products_fetch_success'
 export const PRODUCTS_FETCH_ERROR = 'products_fetch_error'
 export const PRODUCTS_FETCHING = 'products_fectching'
 
+//Product Detail
+export const PRODUCT_DETAIL_FETCH_SUCCESS = 'product_detail_fetch_success'
+export const PRODUCT_DETAIL_FETCH_ERROR = 'product_detail_fetch_error'
+export const PRODUCT_DETAIL_FETCHING = 'product_detail_fectching'
+
 //Shopping Cart
 export const ADDING_PRODUCT_TO_CART = 'adding_product_to_cart'
 export const ADD_PRODUCT_TO_CART = 'add_product_to_cart'

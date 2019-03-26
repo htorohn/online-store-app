@@ -20,7 +20,7 @@ export const taxonomiesFetch = () => {
             .get(`${MAIN_URL}/api/v2/storefront/taxons`)
             .query( { include: "image" } )
             .set('Content-Type', 'application/json')
-            .set('Access-Control-Allow-origin', '*')
+            //.set('Access-Control-Allow-origin', '*')
             .then ((response) => {
                 //console.log('action', response)
                 dispatch({ type: TAXONOMIES_FETCH_SUCCESS, payload: response.body });

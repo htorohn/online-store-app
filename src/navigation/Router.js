@@ -8,7 +8,7 @@ import DrawerContent from './DrawerContent'
 import ProductsList from '../screens/HomeScreen/ProductsList'
 import TaxonList from '../screens/HomeScreen/TaxonList'
 import Home from '../screens/HomeScreen/Home'
-import ProductDetail from '../screens/HomeScreen/ProductDetail'
+import ProductShow from '../screens/HomeScreen/ProductShow'
 import Cart from '../screens/CartScreen/Cart'
 import Login from '../screens/UserScreen/Login'
 import Register from '../screens/UserScreen/Register'
@@ -43,7 +43,7 @@ const AppNavigator = () => {
                     />
                     <Scene
                         key="ProductDetail"
-                        component={ProductDetail}
+                        component={ProductShow}
                         title="My Shop"
                         navBar={NavBar}
                     />

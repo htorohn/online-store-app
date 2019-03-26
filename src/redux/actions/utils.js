@@ -30,6 +30,7 @@ const Utils = {
         return {
           id: product.id,
           name: product.attributes.name,
+          slug: product.attributes.slug,
           display_price: product.attributes.display_price,
           image: product.relationships.images.data === null 
             ? null 
