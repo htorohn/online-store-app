@@ -23,6 +23,7 @@ import {
 } from 'native-base'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
+//import GallerySwiper from "react-native-gallery-swiper"
 import Hr from "react-native-hr-component"
 import NumericInput from 'react-native-numeric-input'
 import { addProductToCart, productExistOnCart, productDetailFetch } from '../../redux/actions'
@@ -54,6 +55,7 @@ class ProductShow extends Component {
     }
 
     handleButtonPress(variant) {
+        console.log("add variant", variant)
         let line_item = {
             variant_id: variant.id,
             quantity: this.state.qty
@@ -90,9 +92,11 @@ class ProductShow extends Component {
             //const { item } = this.props
             var selected_variant = {}
             var images = _.map(product.master.images, 'large_url')
+            //var images = _.map(product.master.images, (image) => {return {uri: image.large_url}})
             if (product.has_variants){
                 selected_variant = product.variants[this.state.current_variant]
                 images.push.apply(images, _.map(selected_variant.images, 'large_url'))
+                //images.push.apply(images, _.map(selected_variant.images, (image) => {return {uri: image.large_url}}))
             }else {
                 selected_variant = product.master
             }
@@ -179,7 +183,9 @@ class ProductShow extends Component {
                     <Content>
                         <Card transparent>
                             <CardItem cardBody>
+                                {/* <GallerySwiper */}
                                 <ImageSlider
+                                
                                     style={{flex: 1, height: 400, width: null}}
                                     images={ images }
                                 />

@@ -21,10 +21,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.toro.spreeshop"
     },
+    
     "androidStatusBar": {
-      "backgroundColor": "#000000"
+      "backgroundColor": "#C2185B"
+    },
+    "android": {
+      "package": "com.toro.spreeshop"
     }
   }
 }

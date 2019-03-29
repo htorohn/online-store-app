@@ -172,23 +172,6 @@ class ProductList extends Component {
         } else return null
 
         const { item, current_image } = this.props
-        // return (
-        //     <Container>
-        //         <ImageOverlay 
-        //                 source={ { uri: MAIN_URL + current_image.attributes.styles[3].url }}
-        //                 title={item.attributes.name}
-        //                 titleStyle={{ fontSize: 50, fontWeight: 'bold' }}
-        //             />
-        //         <FlatList 
-        //             data={productArray}
-        //             style={{ flex: 1 }}
-        //             renderItem={({ item }) => this.renderItem(item)}
-        //             keyExtractor={this._keyExtractor}
-        //             numColumns={2}
-
-        //         />
-        //     </Container>
-        // )
 
         return (
             <View style={styles.fill}>
@@ -226,7 +209,7 @@ class ProductList extends Component {
                 {/* {this._renderScrollViewContent()} */}
                 <FlatList 
                     data={productArray}
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, paddingTop: 5 }}
                     renderItem={({ item }) => this.renderItem(item)}
                     keyExtractor={this._keyExtractor}
                     numColumns={2}

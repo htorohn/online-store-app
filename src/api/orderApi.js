@@ -6,17 +6,46 @@ export const orderApi = {
         //console.log("estoy en crear orden")
         var request = require('superagent')
         return request
-            .post(`${MAIN_URL}/api/v1/orders`)
+            .post(`${MAIN_URL}/api/v2/storefront/cart`)
             .set('Content-Type', 'application/json')
-            .send({
-                "order": {
-                    "order_token": ""
-                }
-            })
+            // .send({
+            //     "order": {
+            //         "order_token": ""
+            //     }
+            // })
             .then((response) => {
                 return response.body;
             })
+            .catch((error) => {
+                console.error(error)
+            })
     },
+
+    // addLineItem: (params) => {
+    //     var request = require('superagent')
+    //         //const tokenParam = { order_token: params.order_token }
+    //         return request
+    //             .post(`${MAIN_URL}/api/v1/orders/${params.order_number}/line_items`)
+    //             //.query(tokenParam)
+    //             .query({
+    //                 line_item: {
+    //                     variant_id: params.line_item.variant_id,
+    //                     quantity: params.line_item.quantity
+    //                 },
+    //                 order_token: params.order_token
+    //             })
+    //             .set('Content-Type', 'application/json')
+    //             .then((response) => {
+    //                 //console.log("add line item", response.body)
+    //                 //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
+    //                 return response.body
+    //             })
+    //             .catch((error) => {
+    //                 //dispatch({ type: DISPLAY_ERROR, payload: error})
+                    
+    //                 return {error}
+    //             })
+    // },
 
     addLineItem: (params) => {
         var request = require('superagent')

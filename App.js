@@ -20,6 +20,8 @@ export default class App extends React.Component {
 
     //var initial_state = this._loadInitialState()
     //console.log('initial_state', initial_state)
+    
+    const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally))
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -29,7 +31,7 @@ export default class App extends React.Component {
         />
       );
     } else {
-      const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally));
+      //const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally));
       return (
         <Provider store={store}>
           {/* <View style={styles.container}> */}
@@ -63,13 +65,16 @@ export default class App extends React.Component {
         .then((ecommerceState) => {
           //console.log("ecommerce", ecommerceState)
           if (ecommerceState !== null){
-            this.setState({initial_state: JSON.parse(ecommerceState)})
+            //this.setState({initial_state: JSON.parse(ecommerceState)})
           }
         })
         .catch((error) => {
           console.log(error)
         })
-    ]);
+
+      //vamos a cargar la informacion de home
+
+    ])
   }
 
   _handleLoadingError = error => {
