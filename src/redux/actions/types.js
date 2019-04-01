@@ -2,6 +2,7 @@
 export const PRODUCTS_FETCH_SUCCESS = 'products_fetch_success'
 export const PRODUCTS_FETCH_ERROR = 'products_fetch_error'
 export const PRODUCTS_FETCHING = 'products_fectching'
+export const LATEST_PRODUCTS_FETCH_SUCCESS = 'latest_products_fetch_success'
 
 //Product Detail
 export const PRODUCT_DETAIL_FETCH_SUCCESS = 'product_detail_fetch_success'

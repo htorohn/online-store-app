@@ -26,10 +26,10 @@ class TaxonList extends Component {
     _keyExtractor = (item) => item.id.toString()
 
     renderItem(item) {
-        //console.log ("item", item)
+        console.log ("item", item)
         //console.log ("existen?", this.props.taxonomies)
         
-        if (item.relationships.image.data === null) return null
+        if (item.relationships.image.data === null || !item.attributes.is_leaf) return null
 
         const { taxonomies } = this.props.taxonomies
         //obtenemos la imagen del taxon

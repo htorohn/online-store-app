@@ -1,12 +1,14 @@
 import {
     PRODUCTS_FETCH_SUCCESS,
     PRODUCTS_FETCH_ERROR,
-    PRODUCTS_FETCHING
+    PRODUCTS_FETCHING,
+    LATEST_PRODUCTS_FETCH_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
     isFetching: false,
     products: {},
+    latestProducts:{},
     error: false
 
 };
@@ -26,6 +28,13 @@ export default (state = INITIAL_STATE, action) => {
                 isFetching: false,
                 error: false,
                 products: action.payload
+            }
+        case LATEST_PRODUCTS_FETCH_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                error: false,
+                latestProducts: action.payload
             }
         case PRODUCTS_FETCH_ERROR:
             return {
