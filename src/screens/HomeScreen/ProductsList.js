@@ -9,7 +9,7 @@ import {
 import { Container, Content, Card, CardItem, Spinner, Left, Icon, Button } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import _ from 'lodash'
-import { productsFetch, taxonProductsFetch } from '../../redux/actions'
+import { latestProductsFetch, taxonProductsFetch } from '../../redux/actions'
 import { getProductArray } from '../../redux/actions/utils'
 import { MAIN_URL } from '../../constants/Config'
 
@@ -31,7 +31,6 @@ class ProductList extends Component {
         } else {
             this.props.taxonProductsFetch(item)
         }
-
         //Actions.refresh({ title: this.props.item.attributes.name })
     }
 
@@ -119,7 +118,7 @@ class ProductList extends Component {
 }
 
 const mapStateToProps = state => {
-    //console.log(state)
+    console.log("products list",state)
     if (state.productsList.products) {
         const productsList = state.productsList;
         //console.log(productsList);
@@ -129,4 +128,4 @@ const mapStateToProps = state => {
     return state;
 };
 
-export default connect(mapStateToProps, { productsFetch, taxonProductsFetch })(ProductList);
+export default connect(mapStateToProps, { latestProductsFetch, taxonProductsFetch })(ProductList);

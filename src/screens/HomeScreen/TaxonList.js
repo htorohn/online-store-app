@@ -14,13 +14,31 @@ import {
 import ImageOverlay from "react-native-image-overlay"
 
 
-import { taxonomiesFetch } from '../../redux/actions'
+import { taxonomiesFetch, latestProductsFetch } from '../../redux/actions'
 import { MAIN_URL } from '../../constants/Config'
 
 class TaxonList extends Component {
 
+    // componentWillMount() {
+    //     this.props.taxonomiesFetch()
+    // }
+
     componentWillMount() {
-        this.props.taxonomiesFetch()
+        // const { item } = this.props
+        // if (item === undefined) {
+        //     this.props.productsFetch()
+        // } else {
+        //     this.props.taxonProductsFetch(item)
+        // }
+        this._AsyncLoad()
+        //Actions.refresh({ title: this.props.item.attributes.name })
+    }
+
+    _AsyncLoad = async (item) => {
+        return Promise.all([
+            this.props.taxonomiesFetch(),
+            this.props.latestProductsFetch()
+        ])
     }
 
     _keyExtractor = (item) => item.id.toString()
@@ -52,7 +70,7 @@ class TaxonList extends Component {
     render(){
         console.log("taxonomies", this.props.taxonomies)
         const { taxonomies } = this.props.taxonomies
-        if (this.props.taxonomies.isFetching){
+        if (this.props.taxonomies.isFetching || this.props.productsList.isFetching){
             return (
                 <Container>
                     <Content contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
@@ -78,9 +96,9 @@ class TaxonList extends Component {
 }
 
 const mapStateToProps = state => {
-    //console.log(state)
-    const { taxonomies } = state
-  return { taxonomies }
+    console.log("taxon list", state)
+    const { taxonomies, productsList } = state
+  return { taxonomies, productsList }
 };
 
-export default connect(mapStateToProps, { taxonomiesFetch })(TaxonList);
+export default connect(mapStateToProps, { taxonomiesFetch, latestProductsFetch })(TaxonList);
