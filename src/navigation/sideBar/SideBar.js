@@ -27,7 +27,7 @@ const drawerImage = require("../../assets/images/logo-kitchen-sink.png")
 const datas = [
   {
     name: "Home",
-    route: ()=>Actions.popTo('ProductsList'),
+    route: ()=>Actions.popTo('Home'),
     icon: "home",
     bg: "#C5F442"
   },
@@ -48,7 +48,7 @@ class SideBar extends Component {
 
   render() {
     const { taxonomies, user } = this.props
-    console.log("taxonomies", taxonomies)
+    //console.log("taxonomies", taxonomies)
 
     //Render Login menu
     //If not logged in show buttons

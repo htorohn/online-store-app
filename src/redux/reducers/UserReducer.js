@@ -8,10 +8,12 @@ import {
     USER_SUCCESS,
     USER_ERROR
 } from '../actions/types'
+//import console = require('console');
 
 const INITIAL_STATE = {
     id: null,
     email: '',
+    token: {},
     spree_api_key: '',
     bill_address: null,
     ship_address: null,
@@ -31,19 +33,20 @@ export default (state = INITIAL_STATE, action) => {
                 error: null
             }
 
-        // case LOGIN_SUCCESS:
-        //     user = action.payload
-        //     return {
-        //         ...state,
-        //         id: user.id,
-        //         email: user.email,
-        //         spree_api_key: user.spree_api_key,
-        //         bill_address: user.bill_address,
-        //         ship_address: user.ship_address,
-        //         error: null,
-        //         isLoggedIn: true,
-        //         login_user: false
-        //     }
+        case USER_SUCCESS:
+            console.log("user reducer", action.payload)
+            user = action.payload
+            return {
+                ...state,
+                id: user.data.id,
+                email: user.data.attributes.email,
+                //spree_api_key: user.spree_api_key,
+                //bill_address: user.bill_address,
+                //ship_address: user.ship_address,
+                error: null,
+                isLoggedIn: true,
+                login_user: false
+            }
 
         // case REGISTER_USER:
         //     return {
@@ -52,15 +55,11 @@ export default (state = INITIAL_STATE, action) => {
         //         error: null
         //     }
 
-        case USER_SUCCESS:
-            user = action.payload
+        case LOGIN_SUCCESS:
+            //user = action.payload
             return {
                 ...state,
-                id: user.id,
-                email: user.email,
-                spree_api_key: user.spree_api_key,
-                bill_address: user.bill_address,
-                ship_address: user.ship_address,
+                token: action.payload,
                 error: null,
                 isLoggedIn: true,
                 loading_user: false

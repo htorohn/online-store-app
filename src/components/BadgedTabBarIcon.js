@@ -20,6 +20,7 @@ export default BadgedTabBarIcon = ({focused, name, itemCount}) => {
         <Icon
           name={name}
           size={26}
+          style={{ color: 'white' }}
           //style={{ width: 25, height: 25, marginBottom: -3 }}
           //color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           //color={Platform.OS === 'ios' ? Colors.tabIconSelected : 'white'}

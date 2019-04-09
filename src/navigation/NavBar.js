@@ -50,6 +50,7 @@ class NavBar extends React.Component {
                         ? 'ios-arrow-back' 
                         : 'md-arrow-back'
                     }
+                    style={{ color: 'white' }}
                     //size={26}
                     //color={Platform.OS === 'ios' ? Colors.tabIconSelected : 'white'}
                 />
@@ -62,6 +63,7 @@ class NavBar extends React.Component {
             <Button transparent onPress={ () => Actions.drawerOpen() }>
                 <Icon 
                     name='menu' 
+                    style={{ color: 'white' }}
                     //size={26}
                     //color={Platform.OS === 'ios' ? Colors.tabIconSelected : Colors.noticeText}
                 />
@@ -73,7 +75,7 @@ class NavBar extends React.Component {
   _renderMiddle() {
     return (
     //   <View style={styles.navBarItem}>
-        <Title>{this.props.title}</Title>
+        <Title style={{ color: 'white' }}>{this.props.title}</Title>
       //{/* </View> */}
     );
   }
@@ -85,6 +87,7 @@ class NavBar extends React.Component {
             <BadgedTabBarIcon
                 focused={true}
                 name='cart'
+                
                 // name={
                 //     Platform.OS === 'ios' 
                 //         ? 'ios-cart-outline' //${focused ? '' : '-outline'}` 
@@ -101,7 +104,7 @@ class NavBar extends React.Component {
   render() {
     //console.log("nav bar", this.props)
     return (
-          <Header>
+          <Header style={{ backgroundColor: '#3a455c', borderBottomColor: '#757575'}}>
               <Left style={{flex: 1}}>
                 {this._renderLeft(this.props.index)}
               </Left>

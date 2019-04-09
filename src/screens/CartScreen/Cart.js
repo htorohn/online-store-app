@@ -194,7 +194,7 @@ class ProductDetail extends PureComponent {
                             primary
                             block 
                             large 
-                            onPress={()=>{Actions.popTo('ProductsList')}}
+                            onPress={()=>{Actions.popTo('Home')}}
                         >
                             <Text style={{fontSize: 18}}>Ir a la tienda</Text>
                         </Button>

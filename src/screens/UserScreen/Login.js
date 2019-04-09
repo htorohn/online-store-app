@@ -49,7 +49,7 @@ class Login extends React.Component {
         }
         this.props.login(values)
             .then((response) => {
-                console.log("se hizo login", response)
+                //console.log("se hizo login", response)
                 if (response){
                     Actions.pop()
                 }
@@ -57,7 +57,7 @@ class Login extends React.Component {
     }
     
     render(){
-        console.log("user", this.props.user)
+        //console.log("user", this.props.user)
         const { handleSubmit, user } = this.props
         return (
             <Container style={{ alignContent: 'center', flex: 1, padding: 20 }}>
@@ -90,7 +90,7 @@ class Login extends React.Component {
                             {
                             user.isLoggedIn 
                             ? 
-                                Actions.pop()
+                                null//Actions.pop()
                             :
                                 <Button
                                 transparent 

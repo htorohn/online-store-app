@@ -29,8 +29,10 @@ const AppNavigator = () => {
                 >
                     <Stack key="root" >
                     <Scene
-                        key="TaxonList"
-                        component={TaxonList}
+                        key="Home"
+                        type="reset"
+                        //component={TaxonList}
+                        component={Home}
                         title="My Shop"
                         navBar={NavBar}
                         
