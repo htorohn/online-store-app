@@ -1,70 +1,45 @@
 import { MAIN_URL } from '../constants/Config'
 
-export const orderApi = {
+export const cartApi = {
 
-    createOrder: () => {
-        //console.log("estoy en crear orden")
+    createCart: () => {
+        console.log("estoy en crear orden")
         var request = require('superagent')
         return request
             .post(`${MAIN_URL}/api/v2/storefront/cart`)
             .set('Content-Type', 'application/json')
+            .query({ include: 'line_items,variants,variants.images' })
             // .send({
             //     "order": {
             //         "order_token": ""
             //     }
             // })
             .then((response) => {
-                return response.body;
+                return response
             })
             .catch((error) => {
                 console.error(error)
             })
     },
 
-    // addLineItem: (params) => {
-    //     var request = require('superagent')
-    //         //const tokenParam = { order_token: params.order_token }
-    //         return request
-    //             .post(`${MAIN_URL}/api/v1/orders/${params.order_number}/line_items`)
-    //             //.query(tokenParam)
-    //             .query({
-    //                 line_item: {
-    //                     variant_id: params.line_item.variant_id,
-    //                     quantity: params.line_item.quantity
-    //                 },
-    //                 order_token: params.order_token
-    //             })
-    //             .set('Content-Type', 'application/json')
-    //             .then((response) => {
-    //                 //console.log("add line item", response.body)
-    //                 //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
-    //                 return response.body
-    //             })
-    //             .catch((error) => {
-    //                 //dispatch({ type: DISPLAY_ERROR, payload: error})
-                    
-    //                 return {error}
-    //             })
-    // },
-
     addLineItem: (params) => {
+        console.log("add line item", params)
         var request = require('superagent')
             //const tokenParam = { order_token: params.order_token }
             return request
-                .post(`${MAIN_URL}/api/v1/orders/${params.order_number}/line_items`)
+                .post(`${MAIN_URL}/api/v2/storefront/cart/add_item`)
                 //.query(tokenParam)
-                .query({
-                    line_item: {
-                        variant_id: params.line_item.variant_id,
-                        quantity: params.line_item.quantity
-                    },
-                    order_token: params.order_token
-                })
+                .set(params.auth)
                 .set('Content-Type', 'application/json')
+                .query({
+                    variant_id: params.line_item.variant_id,
+                    quantity: params.line_item.quantity
+                })
+                .query({ include: 'line_items,variants,variants.images,variants.product' })
                 .then((response) => {
-                    //console.log("add line item", response.body)
+                    //console.log("item added", response)
                     //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
-                    return response.body
+                    return response
                 })
                 .catch((error) => {
                     //dispatch({ type: DISPLAY_ERROR, payload: error})
@@ -76,26 +51,25 @@ export const orderApi = {
     updateLineItem: (params) => {
         var request = require('superagent')
             //const tokenParam = { order_token: params.order_token }
-            const {newQty, line_item, order_number, order_token, item_id} = params
+            //const {newQty, line_item, order_number, order_token, item_id} = params
+            console.log("update - ", params)
             return request
-                .put(`${MAIN_URL}/api/v1/orders/${order_number}/line_items/${item_id}`)
-                //.query(tokenParam)
-                .query({
-                    line_item: {
-                        variant_id: line_item.variant_id,
-                        quantity: newQty
-                    },
-                    order_token: order_token
-                })
+                .patch(`${MAIN_URL}/api/v2/storefront/cart/set_quantity`)
+                .set(params.auth)
                 .set('Content-Type', 'application/json')
+                .query({
+                    line_item_id: params.line_item.line_item_id,
+                    quantity: params.line_item.quantity
+                })
+                .query({ include: 'line_items,variants,variants.images' })
                 .then((response) => {
-                    //console.log("update line item", response.body)
+                    console.log("update line item", response.body)
                     //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
-                    return response.body
+                    return response
                 })
                 .catch((error) => {
                     //dispatch({ type: DISPLAY_ERROR, payload: error})
-                    //console.log(error)
+                    console.log(error)
                     return {error}
                 })
     },
@@ -126,16 +100,6 @@ export const orderApi = {
                     //console.log("error", error)
                     return {error}
                 })
-    },
-
-    lineItemExists: (line_item, cart) => {
-        const resultado = cart.find(item => item.variant_id === line_item.variant_id)
-        return resultado
-        // console.log("resultado", resultado)
-        // if (resultado === undefined){
-        //     return false
-        // }
-        // return true
     }
 
 }

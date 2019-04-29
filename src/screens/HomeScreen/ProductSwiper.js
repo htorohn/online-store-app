@@ -12,7 +12,7 @@ import { Actions } from 'react-native-router-flux'
 import { Container, Content, Card, CardItem, Spinner, Left, Icon, Button, Right } from 'native-base'
 import ImageOverlay from "react-native-image-overlay"
 import { MAIN_URL } from '../../constants/Config'
-import { getProductArray } from '../../redux/actions/utils'
+import { Utils } from '../../redux/actions/utils'
 import { sliderWidth, itemWidth } from './carouselStyles'
 import Swiper from 'react-native-swiper'
 const { width, height } = Dimensions.get('window')
@@ -35,7 +35,7 @@ class ProductSwiper extends Component {
 
     _renderItem(item){
 
-        console.log("item latest", item)
+        //console.log("item latest", item)
         //const {item} = product
         return (
             <TouchableWithoutFeedback onPress={() => Actions.ProductDetail({item})} key={item.id}>
@@ -78,7 +78,7 @@ class ProductSwiper extends Component {
     render(){
         const {products} = this.props
         //console.log("latest products", products)
-        const productArray = getProductArray(products)
+        const productArray = Utils.getProductArray(products)
         //console.info("array", productArray)
         return (
             // <Carousel

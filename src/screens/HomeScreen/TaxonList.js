@@ -1,47 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { FlatList, TouchableWithoutFeedback, Image, View } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import _ from 'lodash'
 import {
-    Container,
     Card,
-    Content,
-    Spinner,
-    CardItem,
-    Text,
-    Left
 } from 'native-base'
 import ImageOverlay from "react-native-image-overlay"
-
-
-import { taxonomiesFetch, latestProductsFetch } from '../../redux/actions'
-import LatestProducts from './ProductSwiper'
 import { MAIN_URL } from '../../constants/Config'
 
 class TaxonList extends Component {
-
-    // componentWillMount() {
-    //     this.props.taxonomiesFetch()
-    // }
-
-    // componentWillMount() {
-    //     // const { item } = this.props
-    //     // if (item === undefined) {
-    //     //     this.props.productsFetch()
-    //     // } else {
-    //     //     this.props.taxonProductsFetch(item)
-    //     // }
-    //     this._AsyncLoad()
-    //     //Actions.refresh({ title: this.props.item.attributes.name })
-    // }
-
-    // _AsyncLoad = async (item) => {
-    //     return Promise.all([
-    //         this.props.taxonomiesFetch(),
-    //         this.props.latestProductsFetch()
-    //     ])
-    // }
 
     _keyExtractor = (item) => {
         if (item.id === undefined) {
@@ -51,16 +18,7 @@ class TaxonList extends Component {
     }
 
     renderItem(item) {
-        console.log ("item", item)
-        //console.log ("existen?", this.props.taxonomies)
-        // if (item.id === undefined){
-        //     return (
-        //         // <Container>
-        //             //{/* <Text>Latest Products</Text> */}
-        //             <LatestProducts products={item} />
-        //         //{/* </Container> */}
-        //     )
-        // }
+        //console.log ("item", item)
 
         if (item.relationships.image.data === null || !item.attributes.is_leaf) return null
 
@@ -83,49 +41,14 @@ class TaxonList extends Component {
     }
 
     render(){
-        console.log("taxonomieseses", this.props)
+        //console.log("taxonomieseses", this.props)
         const { taxonomies } = this.props
-        //if (this.props.taxonomies.isFetching || this.props.productsList.isFetching){
-        // if (_.isEmpty(this.props.taxonomies.taxonomies) || _.isEmpty(this.props.productsList.latestProducts)){
-        //     return (
-        //         <Container>
-        //             <Content contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
-        //                 <Spinner color='black' />
-        //             </Content>
-        //         </Container>
-        //     );
-        // }
-        //const {latestProducts} = this.props.productsList
-        //let listData = [...taxonomies.data]
-        //listData.splice(0,0,latestProducts)
-        //console.log('listData', listData)
-        return (
-            // <Container>
-            //     <FlatList 
-            //         data={listData}
-            //         style={{ flex: 1 }}
-            //         renderItem={({ item }) => this.renderItem(item)}
-            //         //keyExtractor={this._keyExtractor}
-            //         numColumns={1}
-
-            //     />
-            // </Container>
-            // <View>
-                
-                    taxonomies.data.map((taxonomy) => {
-                        return this.renderItem(taxonomy)
-                    })
-                
-            //{/* </View> */}
+        return (      
+            taxonomies.data.map((taxonomy) => {
+                return this.renderItem(taxonomy)
+            })
         )
     }
 }
 
-// const mapStateToProps = state => {
-//     console.log("taxon list", state)
-//     const { taxonomies, productsList } = state
-//   return { taxonomies, productsList }
-// };
-
-// export default connect(mapStateToProps, { taxonomiesFetch, latestProductsFetch })(TaxonList);
 export default TaxonList

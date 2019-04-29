@@ -1,5 +1,5 @@
 import {
-    LOGIN_USER,
+    //LOGIN_USER,
     //LOGIN_ERROR,
     LOGIN_SUCCESS,
     USER_ACTION,
@@ -7,7 +7,7 @@ import {
     USER_ERROR
 } from './types'
 import { userApi } from '../../api/userApi'
-import { MAIN_URL } from '../../constants/Config'
+//import { MAIN_URL } from '../../constants/Config'
 
 export const login = (params) => {
     //console.log("estoy login", params)
@@ -18,7 +18,9 @@ export const login = (params) => {
             .then((response) => {
                 //console.log("action response", response)
                 if (response.status == 200){
-                    //console.log("login", response)
+                    console.log("login", response.body)
+                    // var timeStamp = Math.floor(Date.now() / 1000)
+                    // console.info("time", timeStamp)
                     dispatch({ type: LOGIN_SUCCESS, payload: response.body })
                     userApi.getAccount(response.body.access_token)
                         .then((response) => {
@@ -31,21 +33,9 @@ export const login = (params) => {
                     return false
                 }
             })
-
-        // try{
-        //     const token = userApi.login(params)
-          
-        //     const account = userApi.getAccount({
-        //         bearerToken: token.access_token
-        //     })
-
-        //     dispatch({ type: LOGIN_SUCCESS, payload: token })
-        //     dispatch({ type: USER_SUCCESS, payload: account })
-
-        // } catch(error){
-        //     console.error(error)
-        //     dispatch({ type: USER_ERROR, payload: error })
-        // }
+            .catch((error) => {
+                console.log(error)
+            })
     }
 }
 
@@ -67,5 +57,36 @@ export const register = (params) => {
                     return false
                 }
             })
+    }
+}
+
+export const logout = () => {
+    return (dispatch) => {
+        dispatch({ type: LOGOUT })
+    }
+}
+
+export const getValidToken = () => {
+    return (dispatch, getState) => {
+        const {token, token_created_at} = getState().user
+        if (_.isEmpty(token)){
+            return null
+        }
+        //Vamos a validar si el token todavia es valido. Si es valido lo retornamos, si no, hacemos un refresh
+        var timeStamp = Math.floor(Date.now() / 1000)
+        if ((token_created_at + token.expires_in) < timeStamp){
+            return token.access_token
+        } else {
+            return userApi.refreshToken(token.refresh_token)
+                .then((response) => {
+                    console.log ("refresh token", response)
+                    dispatch({ type: LOGIN_SUCCESS, payload: response.body })
+                    return response.body.access_token
+                })
+                .catch((error) => {
+                    console.log(error)
+                    return null
+                })
+        }
     }
 }

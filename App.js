@@ -8,7 +8,7 @@ import { Root } from 'native-base'
 import reducers from './src/redux/reducers'
 //import AppNavigator from './navigation/AppNavigator';
 import AppNavigator from './src/navigation/Router'
-import persistDataLocally from './src/middleware/persist-data-locally'
+import persistDataLocally  from './src/middleware/persist-data-locally'
 
 export default class App extends React.Component {
   state = {
@@ -65,7 +65,7 @@ export default class App extends React.Component {
         .then((ecommerceState) => {
           //console.log("ecommerce", ecommerceState)
           if (ecommerceState !== null){
-            //this.setState({initial_state: JSON.parse(ecommerceState)})
+            this.setState({initial_state: JSON.parse(ecommerceState)})
           }
         })
         .catch((error) => {

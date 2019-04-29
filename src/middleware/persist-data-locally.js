@@ -1,4 +1,5 @@
 import { SecureStore } from "expo"
+import _ from 'lodash'
 
 const persistDataLocally = (store) => (next) => async (action) => {
     next(action)
@@ -7,7 +8,7 @@ const persistDataLocally = (store) => (next) => async (action) => {
         //"productsList": {}, Este campo no se guarda, para que al iniciar la 
         //aplicacion se actualice la lista de productos
         "cart": store.getState().cart,
-        "order": store.getState().order,
+        //"order": store.getState().order,
         "user": store.getState().user
     }
     //console.log("form", store.getState().form)
@@ -19,5 +20,5 @@ const persistDataLocally = (store) => (next) => async (action) => {
             console.log(error)
         })
   }
-  
-  export default persistDataLocally
+
+export default persistDataLocally

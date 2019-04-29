@@ -1,4 +1,7 @@
+import _ from 'lodash'
 import {
+    CREATE_CART_SUCCESS,
+    CREATE_CART_FAILURE,
     ADDING_PRODUCT_TO_CART,
     ADD_PRODUCT_TO_CART,
     REMOVE_PRODUCT_FROM_CART,
@@ -12,8 +15,10 @@ import {
 } from './types'
 import { MAIN_URL } from '../../constants/Config'
 //import { _HEADERS } from '../../constants/Headers'
-import { newOrderParams } from './utils'
-import { orderApi } from '../../api/orderApi'
+import { Utils } from './utils'
+//import { getValidToken } from './UserActions'
+import { cartApi } from '../../api/cartApi'
+import { getValidToken } from '../../middleware/persist-data-locally'
 
 export const getOrder = () => {
     return (dispatch, getState) => {
@@ -45,45 +50,51 @@ export const addProductToCart = (product) => {
     return (dispatch, getState) => {
         dispatch({ type: ADDING_PRODUCT_TO_CART, payload: true})
         //console.log(getState().order)
-        let current_order = getState().order
+        let current_order = getState().cart.cart
+        console.log("addproducttocart", current_order)
         const {line_item} = product
-        if (current_order.orderNumber == "") {
+        let auth
+        if (_.isEmpty(current_order)) {
             //Se va a crear una orden nueva
-            return orderApi.createOrder()
+            return cartApi.createCart()
                 .then((response) => {
-                    console.log("create cart", response)
-                    if (response.attributes.number === undefined){
-                        dispatch({ type: CREATING_ORDER_FAILURE });
+                    console.log("create cart", response.body)
+                    if (response.status != 201){
+                        dispatch({ type: CREATE_CART_FAILURE });
                         return
                     }
                     else {
-                        console.info("create order", response)
-                        dispatch({ type: CREATING_ORDER_SUCCESS, payload: response });
-                        order_number = response.attributes.number
-                        order_token = response.attributes.token
-                        // return orderApi.addLineItem({line_item, order_number, order_token})
-                        //     .then((response) => {
-                        //         if(response.error === undefined){
-                        //             dispatch({ type: ADD_PRODUCT_TO_CART, payload: response })
-                        //             dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
-                        //         }
-                        //         else {
-                        //             dispatch({ type: DISPLAY_ERROR, payload: error})
-                        //         }
-                        //     })
+                        console.info("create order", response.body)
+                        dispatch({ type: CREATE_CART_SUCCESS, payload: response.body })
+                        //order_number = response.attributes.number
+                        //order_token = response.attributes.token
+                        //const userToken = getValidToken()
+                        auth = Utils.tokenForAPI(getState().user, getState().cart.cart)
+                        console.log("auth", auth)
+                        return cartApi.addLineItem({line_item, auth})
+                            .then((response) => {
+                                if(response.status == 200){
+                                    dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
+                                    dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
+                                }
+                                else {
+                                    dispatch({ type: DISPLAY_ERROR, payload: error})
+                                }
+                            })
                     }
                     
                 })
         } else {
             //La orden ya existe
-            let order_number = current_order.order.number
-            let order_token = current_order.order.token
-            const current_item = orderApi.lineItemExists(line_item, getState().cart.line_items)
+            // let order_number = current_order.order.number
+            // let order_token = current_order.order.token
+            auth = Utils.tokenForAPI(getState().user, getState().cart.cart)
+            const current_item = Utils.lineItemExists(line_item, getState().cart.line_items)
             if (current_item === undefined){
-                return orderApi.addLineItem({line_item, order_number, order_token})
+                return cartApi.addLineItem({line_item, auth})
                     .then((response) => {
-                        if(response.error === undefined){
-                            dispatch({ type: ADD_PRODUCT_TO_CART, payload: response })
+                        if(response.status == 200){
+                            dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                             dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                         }
                         else {
@@ -94,18 +105,25 @@ export const addProductToCart = (product) => {
             else {
                 //El producto ya existe en el carrito y solo actualizamos la cantidad
                 console.log("El producto ya existe")
-                const newQty = current_item.quantity + line_item.quantity
-                const item_id = current_item.id
-                return orderApi.updateLineItem({line_item, order_number, order_token, newQty, item_id})
+                //const newQty = current_item.quantity + line_item.quantity
+                //const item_id = current_item.id
+                line_item['quantity'] = line_item.quantity + current_item.quantity
+                line_item['line_item_id'] = current_item.line_item_id
+                return cartApi.updateLineItem({line_item, auth})
                     .then((response) => {
-                        if(response.error === undefined){
-                            dispatch({ type: UPDATE_PRODUCT_ON_CART, payload: response })
+                        if(response.status == 200){
+                            //dispatch({ type: UPDATE_PRODUCT_ON_CART, payload: response })
+                            dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                             dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                             //dispatch({ type: UPDATING_PRODUCT_ON_CART, payload: false })
                         }
                         else {
-                            dispatch({ type: DISPLAY_ERROR, payload: error})
+                            dispatch({ type: DISPLAY_ERROR, payload: "error"})
                         }
+                    })
+                    .catch((error) => {
+                        console.log ("catch - ", error)
+                        dispatch({ type: DISPLAY_ERROR, payload: "error"})
                     })
             }
         }
@@ -115,22 +133,31 @@ export const addProductToCart = (product) => {
 export const updateProductOnCart = (product) => {
     return (dispatch, getState) => {
         dispatch({ type: ADDING_PRODUCT_TO_CART, payload: true})
+        let current_order = getState().cart.cart
+        console.log("addproducttocart", current_order)
+        const {line_item} = product
+        let auth = Utils.tokenForAPI(getState().user, getState().cart.cart)
         //console.log(getState().order)
-        let current_order = getState().order
-        const {item_id, line_item} = product
-        let order_number = current_order.order.number
-        let order_token = current_order.order.token
-        const newQty = line_item.quantity
-        return orderApi.updateLineItem({line_item, order_number, order_token, newQty, item_id})
+        console.log("El producto ya existe")
+        //const newQty = current_item.quantity + line_item.quantity
+        //const item_id = current_item.id
+        line_item['quantity'] = line_item.quantity + current_item.quantity
+        line_item['line_item_id'] = current_item.line_item_id
+        return cartApi.updateLineItem({line_item, auth})
             .then((response) => {
-                if(response.error === undefined){
-                    dispatch({ type: UPDATE_PRODUCT_ON_CART, payload: response })
+                if(response.status == 200){
+                    //dispatch({ type: UPDATE_PRODUCT_ON_CART, payload: response })
+                    dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                     dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                     //dispatch({ type: UPDATING_PRODUCT_ON_CART, payload: false })
                 }
                 else {
-                    dispatch({ type: DISPLAY_ERROR, payload: error})
+                    dispatch({ type: DISPLAY_ERROR, payload: "error"})
                 }
+            })
+            .catch((error) => {
+                console.log ("catch - ", error)
+                dispatch({ type: DISPLAY_ERROR, payload: "error"})
             })
     }
 

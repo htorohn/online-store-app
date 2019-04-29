@@ -66,6 +66,7 @@ class Login extends React.Component {
                     <Field 
                         name="email"
                         keyboardType = 'email-address'
+                        autoCapitalize= 'none'
                         label = 'email'
                         textContentType = 'emailAddress'
                         component = {renderTextField} 

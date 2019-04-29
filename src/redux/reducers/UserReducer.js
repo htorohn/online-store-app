@@ -2,6 +2,7 @@ import {
     LOGIN_USER,
     //LOGIN_ERROR,
     LOGIN_SUCCESS,
+    LOGOUT,
     REGISTER_USER,
     REGISTER_SUCCESS,
     USER_ACTION,
@@ -9,11 +10,13 @@ import {
     USER_ERROR
 } from '../actions/types'
 //import console = require('console');
+//import console = require('console');
 
 const INITIAL_STATE = {
     id: null,
     email: '',
     token: {},
+    token_created_at: null,
     spree_api_key: '',
     bill_address: null,
     ship_address: null,
@@ -33,6 +36,23 @@ export default (state = INITIAL_STATE, action) => {
                 error: null
             }
 
+        case LOGIN_SUCCESS:
+            //user = action.payload
+            console.log("Estoy en login_success")
+            var timeStamp = Math.floor(Date.now() / 1000)
+            console.info("time", timeStamp)
+            return {
+                ...state,
+                token: action.payload,
+                token_created_at: timeStamp,
+                error: null,
+                isLoggedIn: true,
+                loading_user: false
+            }
+        
+        case LOGOUT:
+            return INITIAL_STATE
+       
         case USER_SUCCESS:
             console.log("user reducer", action.payload)
             user = action.payload
@@ -55,20 +75,13 @@ export default (state = INITIAL_STATE, action) => {
         //         error: null
         //     }
 
-        case LOGIN_SUCCESS:
-            //user = action.payload
-            return {
-                ...state,
-                token: action.payload,
-                error: null,
-                isLoggedIn: true,
-                loading_user: false
-            }
+        
         case USER_ERROR:
             return {
                 ...state,
                 error: action.payload,
-                loading_user: false
+                loading_user: false,
+                user: {}
             }
 
         default:

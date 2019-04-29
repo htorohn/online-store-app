@@ -22,6 +22,7 @@ import {
 import { Actions } from 'react-native-router-flux'
 import { getOrder, updateProductOnCart, removeProductFromCart } from '../../redux/actions'
 //import OrderReducer from '../../redux/reducers/OrderReducer';
+import { MAIN_URL } from '../../constants/Config'
 
 class ProductDetail extends PureComponent {
     //state = {selected: (new Map(): Map<string, boolean>)};
@@ -32,7 +33,7 @@ class ProductDetail extends PureComponent {
     // }
     
     componentWillMount(){
-        this.props.getOrder()
+        //this.props.getOrder()
     }
 
     // componentWillReceiveProps(){
@@ -41,11 +42,12 @@ class ProductDetail extends PureComponent {
 
     _keyExtractor = (item) => {
         //console.log("key extractor", item)
-        return item.variant.id.toString()
+        return item.line_item_id.toString()
     }
 
     handleClick(item) {
         console.log("item", item)
+        Actions.ProductDetail({item})
     }
 
     handleRemoveClick(item) {
@@ -97,17 +99,17 @@ class ProductDetail extends PureComponent {
 
     renderItem(item, key) {
         //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
-        //console.log("item:",item)
-        const { variant } = item
+        console.log("item:",item)
+        const { variant, images, slug } = item
         var variant_option = null
-        if (!variant.is_master) {
+        if (!variant.attributes.is_master) {
             variant_option = 
                 <Text>
-                    {variant.options_text}
+                    {variant.attributes.options_text}
                 </Text>
         }
         let cantidad = []
-        for (let i = 0; i < variant.total_on_hand; i++){
+        for (let i = 0; i < variant.attributes.total_on_hand; i++){
             cantidad.push(i+1)
         }
         let qtyPicker = null
@@ -115,8 +117,8 @@ class ProductDetail extends PureComponent {
             <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}
-                //placeholderStyle={{ color: "#bfc6ea" }}
-                //placeholderIconColor="#007aff"
+                placeholderStyle={{ color: "#bfc6ea" }}
+                placeholderIconColor="#007aff"
                 style={{ width: 120 }}
                 selectedValue={item.quantity}
                 onValueChange={(value) => {this.handleQtyChange(item, value)}}
@@ -133,17 +135,17 @@ class ProductDetail extends PureComponent {
             </Picker>
         //console.log(variant.images[0].small_url)
         return (
-            <TouchableWithoutFeedback key={key} onPress={() => this.handleClick({item})}>
+            <TouchableWithoutFeedback key={key} onPress={() => Actions.ProductDetail({item})}>
                 {/* <Content style={{flex: 1}}> */}
                 <ListItem thumbnail key={key}>
                     <Left>
-                        <Thumbnail square source={{ uri: `${variant.images[0].small_url}` }} />
+                        <Thumbnail square source={{ uri: `${MAIN_URL}${images.attributes.styles[1].url}` }} />
                     </Left>
                     <Body>
-                        <H3 numberOfLines={1}>{variant.name}</H3>
-                        <Text style={{color: "red"}}>{item.single_display_amount}</Text>
+                        <H3 numberOfLines={1}>{variant.attributes.name}</H3>
+                        <Text style={{color: "red"}}>{variant.attributes.display_price}</Text>
                         {variant_option}
-                        {/* <Text>{`Qty: ${item.quantity}`}</Text> */}
+                        {/* <Text>{`Qty: ${item.quantity}`}</Text>  */}
                         {qtyPicker}
                     </Body>
                     <Right>            
@@ -235,7 +237,7 @@ class ProductDetail extends PureComponent {
                         width: '100%'
                     }}
                 >
-                    <Text>Checkout {order.isFetching?"":order.order.display_item_total}</Text>
+                    <Text>Checkout {cart.isFetching?"":cart.cart.data.attributes.display_total}</Text>
                 </Button>
             </Container>
         )
@@ -243,7 +245,7 @@ class ProductDetail extends PureComponent {
 }
 
 mapStateToProps = (state) => {
-    //console.log(state.cart)
+    console.log(state.cart)
     const {cart, order} = state
     return {cart, order}
 }

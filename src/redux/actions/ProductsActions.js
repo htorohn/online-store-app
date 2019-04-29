@@ -43,7 +43,7 @@ export const latestProductsFetch = () => {
             .set('Content-Type', 'application/json')
             //.set('Access-Control-Allow-origin', '*')
             .then ((response) => {
-                console.log('product_action', response.body)
+                //console.log('product_action', response.body)
                 dispatch({ type: LATEST_PRODUCTS_FETCH_SUCCESS, payload: response.body })
             })
             .catch ((error) => {
@@ -63,7 +63,7 @@ export const productDetailFetch = (product) => {
             .set('Content-Type', 'application/json')
             //.set('Access-Control-Allow-origin', '*')
             .then ((response) => {
-                console.log('product_action', response.body)
+                //console.log('product_action', response.body)
                 dispatch({ type: PRODUCT_DETAIL_FETCH_SUCCESS, payload: response.body })
             })
             .catch ((error) => {
@@ -85,7 +85,7 @@ export const taxonProductsFetch = (taxon) => {
                 'include': 'images'
             })
             .then ((response) => {
-                console.log("productos del taxon", response.body)
+                //console.log("productos del taxon", response.body)
                 dispatch({ type: PRODUCTS_FETCH_SUCCESS, payload: response.body })
             })
             .catch ((error) => {

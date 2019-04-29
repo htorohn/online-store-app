@@ -51,6 +51,9 @@ class Home extends Component {
             );
         }
 
+        // var timeStamp = Math.floor(Date.now() / 1000)
+        //     console.log("time en home", timeStamp)
+
         return (
             // <Container >
                 <Content style={{ backgroundColor: '#d5d5d6'}}>
@@ -96,9 +99,9 @@ class Home extends Component {
                         <CardItem header>
                             <Text style={{fontSize: 20, fontWeight: 'bold'}}>Categories</Text>
                         </CardItem>
-                        </Card>
+                    </Card>
                         {/* <CardItem body> */}
-                            <TaxonList taxonomies={taxonomies} />
+                    <TaxonList taxonomies={taxonomies} />
                         {/* </CardItem> */}
                      
                 </Content>

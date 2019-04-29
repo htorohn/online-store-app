@@ -19,7 +19,7 @@ import {
     Right,
     Spinner,
     Toast,
-    Form
+    //Form
 } from 'native-base'
 import _ from 'lodash'
 import ImageSlider from 'react-native-image-slider'
@@ -27,7 +27,8 @@ import ImageSlider from 'react-native-image-slider'
 import Hr from "react-native-hr-component"
 import NumericInput from 'react-native-numeric-input'
 import { addProductToCart, productExistOnCart, productDetailFetch } from '../../redux/actions'
-import { orderApi } from '../../api/orderApi'
+import { cartApi } from '../../api/cartApi'
+import { Utils } from '../../redux/actions/utils'
 
 class ProductShow extends Component {
     constructor(props) {
@@ -44,6 +45,7 @@ class ProductShow extends Component {
     }
 
     componentWillMount() {
+        console.log(this.props.item)
         const { slug } = this.props.item
         this.props.productDetailFetch(slug)
     }
@@ -146,7 +148,14 @@ class ProductShow extends Component {
             }
             let available_quantity = selected_variant.total_on_hand
             //console.log("available quantity 1", available_quantity)
-            const existe = orderApi.lineItemExists(line_item, this.props.state.cart.line_items)
+            
+            //ESTE BLOue hAY QEUE ARREGLARLO
+            let existe = undefined
+            const { cart } = this.props.state
+            //console.log("cart", cart)
+            if (cart.itemCount > 0){
+                existe = Utils.lineItemExists(line_item, this.props.state.cart.line_items)
+            }
             //console.log("existe", existe)
             if ( existe !== undefined ){
                 available_quantity = available_quantity - existe.quantity
@@ -154,7 +163,7 @@ class ProductShow extends Component {
 
             let qty_picker
             //console.log("available quantity", available_quantity)
-            if (available_quantity === 0){
+            if (available_quantity == 0){
                 qty_picker = 
                         <Text note style={{ color: 'red' }}>
                             No Disponible
@@ -225,12 +234,12 @@ class ProductShow extends Component {
                         <Button 
                             block 
                             style={ {marginLeft: 5, marginRight: 5} }
-                            disabled={ selected_variant.total_on_hand === 0?true:false }//|| this.props.state.cart.addingProductToCart?true:false }
+                            disabled={ available_quantity == 0?true:false }//|| this.props.state.cart.addingProductToCart?true:false }
                             onPress={() => {
                                 this.handleButtonPress(selected_variant);
                             }}
                         >
-                            {this.props.state.cart.addingProductToCart?<Spinner color='white'/>:<Text>Agregar</Text>}
+                            {cart.addingProductToCart?<Spinner color='white'/>:<Text>Agregar</Text>}
                         </Button>
                         <Card transparent >
                             <CardItem header>
@@ -275,7 +284,7 @@ class ProductShow extends Component {
 }
 
 const mapStateToProps = state => {
-    //console.log(state.order);
+    console.log("state", state);
     //const { productDetail } = state
     return {
         state

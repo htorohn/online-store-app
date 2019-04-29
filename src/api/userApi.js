@@ -2,28 +2,6 @@ import { MAIN_URL } from '../constants/Config'
 
 export const userApi = {
 
-    // login: (params) => {
-    //     var request = require('superagent')
-    //     return request
-    //         .post(`${MAIN_URL}/api/users/sign_in`)
-    //         .set('Content-Type', 'application/json')
-    //         .send({
-    //             "user": {
-    //                 "email": params.email,
-    //                 "password": params.password
-    //             }
-    //         })
-    //         .then((response) => {
-    //             //console.log("response api", response)
-    //             return response
-    //         })
-    //         .catch((error) => {
-    //             //console.log("error", Object.keys(error), error.response, error)
-                
-    //             return error.response
-    //         })
-    // },
-
     login: (params) => {
         var request = require('superagent')
         return request
@@ -33,6 +11,25 @@ export const userApi = {
                 grant_type: 'password',
                 username: params.email,
                 password: params.password
+            })
+            .then((response) => {
+                console.log("response api", response.body)
+                return response
+            })
+            .catch((error) => {
+                //console.log("error", Object.keys(error), error.response, error)  
+                return error.response
+            })
+    },
+
+    refreshToken: (params) => {
+        var request = require('superagent')
+        return request
+            .post(`${MAIN_URL}/spree_oauth/token`)
+            .set('Content-Type', 'application/json')
+            .query({
+                grant_type: 'refresh_token',
+                refresh_token: params,
             })
             .then((response) => {
                 console.log("response api", response.body)

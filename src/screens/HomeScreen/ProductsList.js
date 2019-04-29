@@ -10,7 +10,7 @@ import { Container, Content, Card, CardItem, Spinner, Left, Icon, Button } from 
 import { Actions } from 'react-native-router-flux'
 import _ from 'lodash'
 import { latestProductsFetch, taxonProductsFetch } from '../../redux/actions'
-import { getProductArray } from '../../redux/actions/utils'
+import { Utils } from '../../redux/actions/utils'
 import { MAIN_URL } from '../../constants/Config'
 
 
@@ -95,11 +95,11 @@ class ProductList extends Component {
                 </Container>
             );
         }
-        console.log("Products list", this.props.productsList)
+        //console.log("Products list", this.props.productsList)
         let productArray
         if (!_.isEmpty(this.props.productsList.products)){
-            productArray = getProductArray (this.props.productsList.products)
-            console.log("Product array", productArray)
+            productArray = Utils.getProductArray (this.props.productsList.products)
+            //console.log("Product array", productArray)
         } else return null
 
         //const { item, current_image } = this.props
