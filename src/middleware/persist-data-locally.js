@@ -1,7 +1,7 @@
 import { SecureStore } from "expo"
 import _ from 'lodash'
 
-const persistDataLocally = (store) => (next) => async (action) => {
+export const persistDataLocally = (store) => (next) => async (action) => {
     next(action)
     //const storage = Expo.SecureStore
     let data = {
@@ -21,4 +21,4 @@ const persistDataLocally = (store) => (next) => async (action) => {
         })
   }
 
-export default persistDataLocally
+//export default persistDataLocally

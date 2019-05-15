@@ -8,7 +8,7 @@ import { Root } from 'native-base'
 import reducers from './src/redux/reducers'
 //import AppNavigator from './navigation/AppNavigator';
 import AppNavigator from './src/navigation/Router'
-import persistDataLocally  from './src/middleware/persist-data-locally'
+import { persistDataLocally, apiRequest }  from './src/middleware'
 
 export default class App extends React.Component {
   state = {
@@ -21,7 +21,7 @@ export default class App extends React.Component {
     //var initial_state = this._loadInitialState()
     //console.log('initial_state', initial_state)
     
-    const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally))
+    const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally, apiRequest))
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -81,9 +81,9 @@ export default class App extends React.Component {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
-  };
+  }
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
-  };
+  }
 }

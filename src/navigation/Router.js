@@ -28,37 +28,37 @@ const AppNavigator = () => {
                     drawerLabel="Hi"
                 >
                     <Stack key="root" >
-                    <Scene
-                        key="Home"
-                        type="reset"
-                        //component={TaxonList}
-                        component={Home}
-                        title="My Shop"
-                        navBar={NavBar}
-                        
-                        //iconName='home'
-                    />
-                    <Scene
-                        key="ProductsList"
-                        component={ProductsList}
-                        navBar={NavBar}
-                    />
-                    <Scene
-                        key="ProductDetail"
-                        component={ProductShow}
-                        title="My Shop"
-                        navBar={NavBar}
-                    />
-                    <Scene
-                        key="Cart"
-                        component={Cart}
-                        navBar={NavBar}
-                        //title="My Shop"
-                        title="Carrito de Compra"
-                        //focused
-                        //onEnter={this.onEnterCart}
-                    //iconName='links'
-                    />
+                        <Scene
+                            key="Home"
+                            type="reset"
+                            //component={TaxonList}
+                            component={Home}
+                            title="My Shop"
+                            navBar={NavBar}
+                            
+                            //iconName='home'
+                        />
+                        <Scene
+                            key="ProductsList"
+                            component={ProductsList}
+                            navBar={NavBar}
+                        />
+                        <Scene
+                            key="ProductDetail"
+                            component={ProductShow}
+                            title="My Shop"
+                            navBar={NavBar}
+                        />
+                        <Scene
+                            key="Cart"
+                            component={Cart}
+                            navBar={NavBar}
+                            //title="My Shop"
+                            title="Carrito de Compra"
+                            //focused
+                            //onEnter={this.onEnterCart}
+                        //iconName='links'
+                        />
                     </Stack>
                 </Drawer>
                 <Stack key="login" headerLayoutPreset="center" path="login/:data" titleStyle={{ alignSelf: 'center' }}>

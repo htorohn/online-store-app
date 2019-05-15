@@ -78,22 +78,16 @@ export const cartApi = {
         var request = require('superagent')
             //const tokenParam = { order_token: params.order_token }
             //console.log("voy a borrar el item", params)
-            const {order_number, order_token, item_id} = params
+            //const {order_number, order_token, item_id} = params
             return request
-                .delete(`${MAIN_URL}/api/v1/orders/${order_number}/line_items/${item_id}`)
-                //.query(tokenParam)
-                .query({
-                    // line_item: {
-                    //     variant_id: params.line_item.variant_id,
-                    //     quantity: params.line_item.quantity
-                    // },
-                    order_token: order_token
-                })
+                .delete(`${MAIN_URL}/api/v2/storefront/cart/remove_line_item/${params.item_id}`)
+                .set(params.auth)
                 .set('Content-Type', 'application/json')
+                .query({ include: 'line_items,variants,variants.images' })
                 .then((response) => {
-                    //console.log("delete line item", response.body)
+                    console.log("delete line item", response.body)
                     //dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
-                    return response.body
+                    return response
                 })
                 .catch((error) => {
                     //dispatch({ type: DISPLAY_ERROR, payload: error})

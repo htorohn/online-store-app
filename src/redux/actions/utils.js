@@ -1,9 +1,11 @@
+//import React from 'react'
+//import { connect } from 'react-redux'
 import _ from 'lodash'
 import { userApi } from '../../api/userApi'
 import { LOGIN_SUCCESS, USER_ERROR } from './types';
 //import console = require('console');
 
-export const Utils = (dispatch) ={
+export const Utils ={
     
   tokenForAPI: (user, orderToken) => {
       let tokenParam = {};
@@ -13,24 +15,25 @@ export const Utils = (dispatch) ={
         tokenParam = { "X-Spree-Order-Token": orderToken.data.attributes.token }
       }
       else {
+        tokenParam = { 'Authorization': 'Bearer ' + user.token.access_token }
+        // //Vamos a validar si el token todavia es valido. Si es valido lo retornamos, si no, hacemos un refresh
+        // var timeStamp = Math.floor(Date.now() / 1000)
+        // if ((user.token_created_at + user.token.expires_in) > timeStamp){
+        //   tokenParam = { 'Authorization': 'Bearer ' + user.token.access_token }
+        // } else {
+        //     userApi.refreshToken(user.token.refresh_token)
+        //         .then((response) => {
+        //             console.log ("refresh token", response.body)
+        //             dispatch({ type: LOGIN_SUCCESS, payload: response.body })
 
-        //Vamos a validar si el token todavia es valido. Si es valido lo retornamos, si no, hacemos un refresh
-        var timeStamp = Math.floor(Date.now() / 1000)
-        if ((user.token_created_at + user.token.expires_in) > timeStamp){
-          tokenParam = { 'Authorization': 'Bearer ' + user.token.access_token }
-        } else {
-            userApi.refreshToken(user.token.refresh_token)
-                .then((response) => {
-                    console.log ("refresh token", response)
-                    dispatch({ type: LOGIN_SUCCESS, payload: response.body })
-                    tokenParam = { 'Authorization': 'Bearer ' + user.token.access_token }
-                })
-                .catch((error) => {
-                    console.log(error)
-                    dispatch({ type: USER_ERROR, payload: error})
-                    tokenParam = null
-                })
-        }
+        //             tokenParam = { 'Authorization': 'Bearer ' + user.token.access_token } //debo cambiar el token aqui poruqe user no se ha actualizado
+        //         })
+        //         .catch((error) => {
+        //             console.log(error)
+        //             dispatch({ type: USER_ERROR, payload: error})
+        //             tokenParam = null
+        //         })
+        // }
 
         // if ( !_.isEmpty(orderToken) ) {
         //   tokenParam = { "X-Spree-Order-Token": orderToken.data.attributes.token };
@@ -88,3 +91,9 @@ export const Utils = (dispatch) ={
     }
     
   }
+
+  // const mapStateToProps = (state) => {
+  //   return state
+  // }
+
+  // export default connect(mapStateToProps, null)(Utils)

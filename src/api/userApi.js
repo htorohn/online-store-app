@@ -24,6 +24,7 @@ export const userApi = {
 
     refreshToken: (params) => {
         var request = require('superagent')
+        console.log("refresh api", params)
         return request
             .post(`${MAIN_URL}/spree_oauth/token`)
             .set('Content-Type', 'application/json')

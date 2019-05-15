@@ -56,8 +56,9 @@ class ProductDetail extends PureComponent {
             'Esta seguro que desea eliminar el producto?',
             [
                 {text: 'Si', onPress: () => {
-                        //console.log('Ok Pressed', item)
-                        this.props.removeProductFromCart(item)
+                        console.log('Ok Pressed', item)
+                        const item_id = item.line_item_id
+                        this.props.removeProductFromCart({item_id})
                             .then (() => {
                                 //alert("Producto Agregado!")
                                 this.props.getOrder()

@@ -78,6 +78,7 @@ export const addProductToCart = (product) => {
                                     dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                                 }
                                 else {
+                                    dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                                     dispatch({ type: DISPLAY_ERROR, payload: error})
                                 }
                             })
@@ -98,6 +99,7 @@ export const addProductToCart = (product) => {
                             dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                         }
                         else {
+                            dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                             dispatch({ type: DISPLAY_ERROR, payload: error})
                         }
                     })
@@ -118,11 +120,13 @@ export const addProductToCart = (product) => {
                             //dispatch({ type: UPDATING_PRODUCT_ON_CART, payload: false })
                         }
                         else {
+                            dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                             dispatch({ type: DISPLAY_ERROR, payload: "error"})
                         }
                     })
                     .catch((error) => {
                         console.log ("catch - ", error)
+                        dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                         dispatch({ type: DISPLAY_ERROR, payload: "error"})
                     })
             }
@@ -157,6 +161,7 @@ export const updateProductOnCart = (product) => {
             })
             .catch((error) => {
                 console.log ("catch - ", error)
+                dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                 dispatch({ type: DISPLAY_ERROR, payload: "error"})
             })
     }
@@ -166,27 +171,22 @@ export const updateProductOnCart = (product) => {
 export const removeProductFromCart = (product) => {
     return (dispatch, getState) => {
         dispatch({ type: ADDING_PRODUCT_TO_CART, payload: true})
-
-        let current_order = getState().order
-        let order_number = current_order.order.number
-        let order_token = current_order.order.token
-        const item_id = product.id
-        return orderApi.removeLineItem({order_number, order_token, item_id})
+        //const current_order = getState().cart.cart
+        const {item_id} = product
+        let auth = Utils.tokenForAPI(getState().user, getState().cart.cart)
+        return cartApi.removeLineItem({item_id, auth})
             .then((response) => {
                 //console.log("response", response)
-                if(response === null){
+                if(response.status == 200){
                     
-                    dispatch({ type: REMOVE_PRODUCT_FROM_CART, payload: item_id });
+                    dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body })
                     dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
                     //dispatch({ type: UPDATING_PRODUCT_ON_CART, payload: false })
                 }
                 else {
-                    if(response.error.status === 404){
-                        dispatch({ type: REMOVE_PRODUCT_FROM_CART, payload: item_id });
-                        dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
-                    } else{
-                        dispatch({ type: DISPLAY_ERROR, payload: response.error})
-                    }
+                    dispatch({ type: ADDING_PRODUCT_TO_CART, payload: false })
+                    dispatch({ type: DISPLAY_ERROR, payload: response.error})
+                    
                 }
             })
     }
