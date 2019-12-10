@@ -17,36 +17,17 @@ import {
     Toast,
     Spinner
 } from 'native-base'
-//import NumericInput from 'react-native-numeric-input'
-//import { getOrder } from '../../redux/actions'
 import { Actions } from 'react-native-router-flux'
-import { getOrder, updateProductOnCart, removeProductFromCart } from '../../redux/actions'
-//import OrderReducer from '../../redux/reducers/OrderReducer';
+import { updateProductOnCart, removeProductFromCart } from '../../redux/actions'
 import { MAIN_URL } from '../../constants/Config'
 
 class ProductDetail extends PureComponent {
-    //state = {selected: (new Map(): Map<string, boolean>)};
-    
-    // constructor(props){
-    //     super(props)
-    //     this.handleClick = this.handleClick.bind(this);
-    // }
-    
-    componentWillMount(){
-        //this.props.getOrder()
-    }
-
-    // componentWillReceiveProps(){
-    //     //this.props.getOrder();
-    // }
 
     _keyExtractor = (item) => {
-        //console.log("key extractor", item)
         return item.line_item_id.toString()
     }
 
     handleClick(item) {
-        console.log("item", item)
         Actions.ProductDetail({item})
     }
 
@@ -60,14 +41,11 @@ class ProductDetail extends PureComponent {
                         const item_id = item.line_item_id
                         this.props.removeProductFromCart({item_id})
                             .then (() => {
-                                //alert("Producto Agregado!")
-                                this.props.getOrder()
                                 Toast.show({
                                     text: "Carrito Actualizado!",
                                     buttonText: "Ok",
                                     duration: 2000
                                 })
-                                console.log("Carrito Actualizado")
                             })
                     }
                 },
@@ -78,30 +56,25 @@ class ProductDetail extends PureComponent {
     }
 
     handleQtyChange(item, newQty) {
-        //console.log("update item", item)
-        //console.log("new qty", newQty)
         let line_item = {
+            line_item_id: item.line_item_id,
             variant_id: item.variant.id,
             quantity: newQty
         }
         const item_id = item.id
         this.props.updateProductOnCart({item_id, line_item})
             .then (() => {
-                //alert("Producto Agregado!")
-                this.props.getOrder()
                 Toast.show({
                     text: "Carrito Actualizado!",
                     buttonText: "Ok",
                     duration: 2000
                   })
-                console.log("Carrito Actualizado")
             })
     }
 
     renderItem(item, key) {
-        //console.log(`${MAIN_URL}${item.master.images[0].product_url}`)
-        console.log("item:",item)
-        const { variant, images, slug } = item
+
+        const { variant, images } = item
         var variant_option = null
         if (!variant.attributes.is_master) {
             variant_option = 
@@ -134,10 +107,8 @@ class ProductDetail extends PureComponent {
                     )
                 }
             </Picker>
-        //console.log(variant.images[0].small_url)
         return (
             <TouchableWithoutFeedback key={key} onPress={() => Actions.ProductDetail({item})}>
-                {/* <Content style={{flex: 1}}> */}
                 <ListItem thumbnail key={key}>
                     <Left>
                         <Thumbnail square source={{ uri: `${MAIN_URL}${images.attributes.styles[1].url}` }} />
@@ -146,7 +117,6 @@ class ProductDetail extends PureComponent {
                         <H3 numberOfLines={1}>{variant.attributes.name}</H3>
                         <Text style={{color: "red"}}>{variant.attributes.display_price}</Text>
                         {variant_option}
-                        {/* <Text>{`Qty: ${item.quantity}`}</Text>  */}
                         {qtyPicker}
                     </Body>
                     <Right>            
@@ -160,15 +130,12 @@ class ProductDetail extends PureComponent {
                         </Button>
                     </Right>
                 </ListItem>
-                 {/* </Content> */}
             </TouchableWithoutFeedback>
         );
     }
 
     render(){
-        let { cart, order } = this.props
-        //console.log("order", order)
-        //console.log("data", cart)
+        let { cart } = this.props
         let showLoader = null
         if (cart.addingProductToCart) {
             showLoader = 
@@ -206,35 +173,28 @@ class ProductDetail extends PureComponent {
             )
         }
 
-        
         return(
             <Container>
                 
                 <Content>
                     <FlatList 
                         data={cart.line_items}
-                        //initialNumToRender={cart.cart.length}
-                        //debug={true}
-                        //extraData={this.props.navigation.state.focused}
-                        //style={{ flex: 1 }}
                         renderItem={({ item }) => this.renderItem(item)}
                         keyExtractor={this._keyExtractor}
-                        //stickyHeaderIndices={buttonIndex}
                     />    
                 </Content>
                 {showLoader} 
                 <Button
-                    //transparent
                     primary
-                    //block
                     full
                     large 
-                    onPress={()=>{console.log("presionaron el boton")}}
+                    onPress={()=>{
+                        console.log("presionaron el boton")
+                        Actions.checkout()
+                    }}
                     style={{
-                        //position: 'absolute',
                         bottom:0,
                         left:0,
-                        //flex: 1,
                         width: '100%'
                     }}
                 >
@@ -247,8 +207,8 @@ class ProductDetail extends PureComponent {
 
 mapStateToProps = (state) => {
     console.log(state.cart)
-    const {cart, order} = state
-    return {cart, order}
+    const {cart} = state
+    return {cart}
 }
 
-export default connect(mapStateToProps, { removeProductFromCart, updateProductOnCart, getOrder })(ProductDetail)
+export default connect(mapStateToProps, { removeProductFromCart, updateProductOnCart })(ProductDetail)

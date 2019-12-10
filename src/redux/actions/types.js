@@ -43,3 +43,6 @@ export const LOGIN_SUCCESS = 'login_success'
 export const LOGOUT = 'logout'
 // export const REGISTER_USER = 'login_user'
 // export const REGISTER_SUCCESS = 'login_success'
+
+//CheckOut
+//export const 

@@ -1,4 +1,4 @@
-//export const MAIN_URL = 'http://192.168.0.30:3000' //Casa
+//export const MAIN_URL = 'http://192.168.0.7:3000' //Casa
 //export const MAIN_URL = 'http://192.168.0.37:3000' //Mimi
 export const MAIN_URL = 'http://172.20.10.3:3000' //Cel
 //export const MAIN_URL = 'http://192.168.100.223:3000' //Dunkin

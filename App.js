@@ -8,7 +8,7 @@ import { Root } from 'native-base'
 import reducers from './src/redux/reducers'
 //import AppNavigator from './navigation/AppNavigator';
 import AppNavigator from './src/navigation/Router'
-import { persistDataLocally, apiRequest }  from './src/middleware'
+import { persistDataLocally, tokenRefresh, cartRequest }  from './src/middleware'
 
 export default class App extends React.Component {
   state = {
@@ -21,7 +21,7 @@ export default class App extends React.Component {
     //var initial_state = this._loadInitialState()
     //console.log('initial_state', initial_state)
     
-    const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally, apiRequest))
+    const store = createStore(reducers, this.state.initial_state, applyMiddleware(ReduxThunk, persistDataLocally, tokenRefresh, cartRequest))
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading

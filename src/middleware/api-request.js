@@ -1,11 +1,14 @@
 import {
     ADDING_PRODUCT_TO_CART,
     LOGIN_SUCCESS,
-    USER_ERROR
+    USER_ERROR,
+    ADD_PRODUCT_TO_CART
 } from '../redux/actions/types'
 import { userApi } from '../api/userApi'
+import { cartApi } from '../api/cartApi'
+import { Utils } from '../redux/actions/utils'
 
-export const apiRequest = (store) => (next) => (action) => {
+export const tokenRefresh = (store) => (next) => (action) => {
     console.log ("api-request-mdw", action)
     //en este arreglo voy a poner todas las acciones qeu necesitan validar el token
     const validate_actions = [
@@ -39,4 +42,22 @@ export const apiRequest = (store) => (next) => (action) => {
         }
     }
     next(action)
+}
+
+export const cartRequest = (store) => (next) => (action) => {
+    next(action)
+    const validate_actions = [
+        LOGIN_SUCCESS
+    ]
+    const {user, cart} = store.getState()
+    if (validate_actions.includes(action.type)){
+        auth = Utils.tokenForAPI(user, cart.cart)
+        cartApi.getCart({auth})
+            .then((response) => {
+                store.dispatch({ type: ADD_PRODUCT_TO_CART, payload: response.body})
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 }

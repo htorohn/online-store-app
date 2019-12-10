@@ -12,6 +12,7 @@ import ProductShow from '../screens/HomeScreen/ProductShow'
 import Cart from '../screens/CartScreen/Cart'
 import Login from '../screens/UserScreen/Login'
 import Register from '../screens/UserScreen/Register'
+import Checkout from '../screens/CheckoutScreen/Checkout';
 
 const AppNavigator = () => {
     return (
@@ -67,7 +68,25 @@ const AppNavigator = () => {
                 <Stack key="register" headerLayoutPreset="center" path="login/:data" titleStyle={{ alignSelf: 'center' }}>
                     <Scene key="registerModal" component={Register} title="Register" onExit={() => console.log('Login: onExit')} leftTitle="Cancel" onLeft={Actions.pop} />
                 </Stack>
-            </Modal>                
+
+                <Stack
+                    key='checkout'
+                    headerLayoutPreset="center"
+                    path="checkout"
+                    navigationBarStyle={{ backgroundColor: '#3a455c', borderBottomColor: '#757575' }}
+                    titleStyle={{ alignSelf: 'center', color: 'white' }}
+                >
+                    <Scene
+                        key="checkoutModal" 
+                        component={Checkout} 
+                        title="Checkout" 
+                        onExit={() => console.log('Login: onExit')} 
+                        leftTitle="Cancel"
+                        //navBar={NavBar}
+                        onLeft={Actions.pop}
+                    />
+                </Stack>
+            </Modal>
         {/* </Scene> */}
       </Router>
     )
